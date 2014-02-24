@@ -74,13 +74,13 @@ public class BoardState extends AbstractAppState
 		Board.setup(sapp);
 		board = Board.getInstance();
 		
-		// Add lighting
+		// Add white ambience
 		lighter.addAmbient();
 		//lighter.addDirectional(ColorRGBA.White);
 		DirectionalLight sun = lighter.addDirectional(-.5, -1, -1, ColorRGBA.White);
 		// lighter.addPoint(Board.coordSq(6, 3.5, 0), 30, ColorRGBA.White);
 		// lighter.addPoint(1, 0, -4, 10, ColorRGBA.White);
-		lighter.addSpot(Board.coordSq(3, 6, 5), new Vector3f(-1, -1, -3), 100, 80, 1, ColorRGBA.Yellow);
+		lighter.addSpot(Board.coordSq(6, 3, 5), new Vector3f(-1, -1, -3), 100, 80, 1, ColorRGBA.Yellow);
 		
     	inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_CAMERA_POS);
     	inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_MEMORY);

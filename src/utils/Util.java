@@ -34,10 +34,11 @@ public class Util
 	
 	/**
 	 * Return the coordinate representation of a chess board square position (0 - 63)
+	 * X: file, Y: rank
 	 */
 	public static int[] toXY(int pos)
 	{
-		return new int[] {pos >> 3, pos & 7};
+		return new int[] {pos & 7, pos >> 3};
 	}
 	
 	public static Vector3f toVec3f(double x, double y, double z)
@@ -48,8 +49,8 @@ public class Util
 	/**
 	 * rank + file coordinate to square
 	 */
-	public static int toSq(int rank, int file)
+	public static int toSq(int file, int rank)
 	{
-		return (rank << 3) + file;  // x * 8 + y
+		return (rank << 3) + file;  // y * 8 + 8
 	}
 }

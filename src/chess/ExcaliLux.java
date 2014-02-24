@@ -65,11 +65,13 @@ public class ExcaliLux extends SimpleApplication
     	stateManager.attach(boardState);
     	
     	// Set initial camera orientation
-    	cam.setLocation(Board.coordSq(-6, 6, 10.0f));
-    	cam.lookAt(Board.coordSq(4, 3), Vector3f.UNIT_Y);
+    	cam.setLocation(Board.coordSq(5, -6, 10.0f));
+    	cam.lookAt(Board.coordSq(3, 4), Vector3f.UNIT_Y);
     	
+    	// Load SkyBox background texture
     	rootNode.attachChild(MaterialFactory
-    			.getInstance().loadSkyBox("Sky/Sunrise", "bmp"));
+    			.getInstance().loadSkyBox("Sky/Sunrise", "bmp")
+    			.rotate(Util.toRad(180), 0, 0));
     }
 
     public void simpleUpdate(float tpf)

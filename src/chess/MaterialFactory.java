@@ -66,7 +66,7 @@ public class MaterialFactory
 		Material mat = new Material(assetManager, PHONG_SHADER);
 		mat.setBoolean("UseMaterialColors", true);
     	mat.setColor("Diffuse", color);
-    	mat.setColor("Ambient", ColorRGBA.Gray);
+    	mat.setColor("Ambient", ColorRGBA.LightGray);
     	mat.setColor("Specular", ColorRGBA.White);
     	mat.setFloat("Shininess", 60f);
     	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Marble/black_marble.jpg"));

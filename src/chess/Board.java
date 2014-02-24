@@ -137,14 +137,14 @@ public class Board
 	
 	/******************** Rendering ********************/
 	/**
-	 * Render all the pieces
+	 * Render all the pieces. Piece names start with '*'
 	 * Default model set: #1
 	 */
 	private void renderPieces()
 	{
 		int sq = 0;
-		for (int x = 0; x < RANK_N; x++)
-			for (int y = 0; y < FILE_N; y++)
+		for (int y = 0; y < RANK_N; y++)
+    		for (int x = 0; x < FILE_N; x++)
     		{
 				int p = boardPiece[sq];
 				
@@ -153,7 +153,8 @@ public class Board
 				{
 					piece = new Piece(
 							(Geometry) assetManager.loadModel("Models/" + PIECE_NAMES[p] + this.modelSet + ".j3o"),
-							sq + "", boardSide[sq] == W ? this.lightPieceMat : this.darkPieceMat, x, y);
+							"*" + PIECE_NAMES[p],  // Piece names always start with asterisk
+							boardSide[sq] == W ? this.lightPieceMat : this.darkPieceMat, x, y);
 					rootNode.attachChild(piece);
 				}
     			this.pieceModels[sq ++] = piece;
@@ -166,8 +167,8 @@ public class Board
 	private void renderQuadBoard()
 	{
 		int sq = 0;
-		for (int x = 0; x < RANK_N; x++)
-			for (int y = 0; y < FILE_N; y++)
+		for (int y = 0; y < RANK_N; y++)
+    		for (int x = 0; x < FILE_N; x++)
     		{
     			Geometry quad = new Geometry("@" + sq, new Quad(SQ_WIDTH, SQ_WIDTH));
     			quad.setMaterial((x + y) % 2 == 0 ? 
@@ -238,16 +239,17 @@ public class Board
 	    						selectedPiece.addControl(new PieceMoveControl(getQuadCoord(hitName)));
 	    						stateManager.detach(quadHighlightState);
 	    					}
+    	    				break;
 	    				}
-	    				else // hits a piece
+	    				else if (hitName.charAt(0) == '*') // hits a piece
 	    				{
 	    					deselect();
 	    					selectedPiece = (Piece) hit;
     						selectedPiece.addControl(new PieceSelectedControl());
     						// If a piece is selected, we allow quad highlighting
     						stateManager.attach(quadHighlightState);
+    	    				break;
 	    				}
-	    				break;
 					}
 	    		}
 				// Right click
@@ -328,7 +330,7 @@ public class Board
 				case 'k': piece = KING; break;
 				}
 				// TODO add bit masks here
-				int sq = toSq(rank, file);
+				int sq = toSq(file, rank);
 				
 				this.boardPiece[sq] = piece;
 				this.boardSide[sq] = side;
@@ -363,14 +365,14 @@ public class Board
 	/**
 	 * Get coordinate of the center of a square
 	 * elevation floats above the scene, default to 0
-	 * @param x rank
-	 * @param y file
+	 * @param x file
+	 * @param y rank
 	 */
 	public static Vector3f coordSq(double x, double y, float elevation)
 	{
-		return new Vector3f((float) y * SQ_WIDTH + SQ_WIDTH/2, 
+		return new Vector3f((float) x * SQ_WIDTH + SQ_WIDTH/2, 
 									elevation, 
-									- (float) (x * SQ_WIDTH + SQ_WIDTH/2));
+									- (float) (y * SQ_WIDTH + SQ_WIDTH/2));
 	}
 	
 	public static Vector3f coordSq(double x, double y)
@@ -380,11 +382,11 @@ public class Board
 	
 	/**
 	 * Get coordinate of the corner of a square
-	 * @param x rank
-	 * @param y file
+	 * @param x file
+	 * @param y rank
 	 */
 	public static Vector3f coordSqCorner(int x, int y)
 	{
-		return new Vector3f(y * SQ_WIDTH, 0f, - x * SQ_WIDTH);
+		return new Vector3f(x * SQ_WIDTH, 0f, - y * SQ_WIDTH);
 	}
 }

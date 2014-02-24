@@ -35,8 +35,8 @@ public class Piece extends Geometry
 	public static final String PIECE_NAMES[] = 
 		{"", "Pawn", "Knight", "Bishop", "Rook", "Queen", "King"};
 	
-	private int x; // rank
-	private int y; // file
+	private int x; // file
+	private int y; // rank
 	
 	/**
 	 * A new chess piece
