@@ -5,12 +5,15 @@ import utils.Util;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.audio.Listener;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.InputManager;
-import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.*;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Matrix3f;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
@@ -21,12 +24,14 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 
+import control.FlipBoardState;
 import control.PieceSelectedControl;
 import control.QuadHoverState;
 import static utils.PP.p;
 import static chess.Piece.*;
 import static utils.Util.*;
 import static chess.MaterialFactory.*;
+import static chess.BoardState.*;
 
 /**
  * @author Jim Fan  (c) 2014
@@ -42,7 +47,9 @@ public class Board
 	public static final int SQ_N = 64;
 	public static final int RANK_N = 8, FILE_N = 8;
 	
+	// Node scene graph
 	private Node rootNode;
+	
 	private AssetManager assetManager;
 	private InputManager inputManager;
 	private AppStateManager stateManager;
@@ -194,16 +201,6 @@ public class Board
 
 	/******************** Input Processing ********************/
 	
-	public final static String // Trigger maps
-		MAP_SELECT = "MouseSelect",
-		MAP_DESELECT = "MouseDeselect",
-		MAP_BOARD = "Board",
-		MAP_MODEL = "Model",
-		MAP_1 = "1", 
-		MAP_2 = "2", 
-		MAP_3 = "3", 
-		MAP_4 = "4";
-	
 	// State managing
 	private QuadHoverState quadHighlightState = new QuadHoverState();
 	
@@ -286,16 +283,92 @@ public class Board
 	/**
 	 * Keyboard listener: chooses a new set of models or piece/board material
 	 */
-	public ActionListener choiceListener()
+	public ActionListener keyChoiceListener()
 	{
 		return new ActionListener()
 		{
 			@Override
 			public void onAction(String name, boolean isPressed, float tpf)
 			{
+				
 			}
 		};
 	}
+	
+	/**
+	 * Keyboard listener: rotate view
+	 * Default rotation direction: clockwise
+	 * Press shift to rotate counterclockwise
+	 * @param id "analog" for continous rotate (KEY_R), "action" for board flip view (KEY_F)
+	 */
+	public InputListener keyRotateListener(String id)
+	{
+		if (id.equals("analog"))
+    		return new AnalogListener()
+    		{
+    			@Override
+    			public void onAnalog(String name, float value, float tpf)
+    			{
+    				if (name.equals(MAP_ROTATE))
+    					rotateBoardCam(value * (isShiftPressed ? -1 : 1));
+    			}
+    		};
+    	else
+    	// press F-key to flip the whole scene
+    	// Shift-F to flip counterclockwise
+    		return new ActionListener()
+			{
+				@Override
+				public void onAction(String name, boolean isPressed, float tpf)
+				{
+					if (isPressed)
+					if (name.equals(MAP_FLIP))
+						stateManager.attach(new FlipBoardState());
+				}
+			};
+	}
+	
+	/**
+	 * Rotation helper: rotate the camera while fixing the view
+	 * on the center of the board
+	 */
+	public void rotateBoardCam(float value)
+	{
+		final Vector3f center2D = coordSqCorner(4, 4);
+		Vector3f center3D = coordSqCorner(4, 4);
+		Vector3f ray = cam.getLocation().subtract(center3D);
+		
+		cam.setLocation(new Quaternion()
+					.fromAngleAxis(value, Vector3f.UNIT_Y)
+					.mult(ray).add(center3D));
+		
+		cam.lookAt(center2D, Vector3f.UNIT_Y);
+	}
+	
+	/**
+	 * Listens to combo keys like Shift+ and Ctrl+
+	 */
+	// The following booleans indicate whether these keys are active
+	private boolean isShiftPressed = false;
+	public boolean isShiftyPressed() {	return this.isShiftPressed;	}
+	private boolean isCtrlPressed = false;
+	public boolean isCtrlPressed() {	return this.isCtrlPressed;		}
+	
+	public ActionListener keyComboListener()
+	{
+		return new ActionListener()
+		{
+			@Override
+			public void onAction(String name, boolean isPressed, float tpf)
+			{
+				if (name.equals("Shift"))
+					Board.this.isShiftPressed = isPressed;
+				else if (name.equals("Ctrl"))
+					Board.this.isCtrlPressed = isPressed;
+			}
+		};
+	}
+	
 	
 	
 	/* Helper Methods */
@@ -325,5 +398,10 @@ public class Board
 	public static Vector3f coordSqCorner(int x, int y)
 	{
 		return new Vector3f(x * SQ_WIDTH, 0f, - y * SQ_WIDTH);
+	}
+	
+	public static Vector3f coordSqCorner(int x, int y, float elevation)
+	{
+		return new Vector3f(x * SQ_WIDTH, elevation, - y * SQ_WIDTH);
 	}
 }

@@ -26,50 +26,39 @@ import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.shadow.SpotLightShadowRenderer;
 
-public class QuadHoverState extends AbstractAppState
+public class FlipBoardState extends AbstractAppState
 {
-	private InputManager inputManager;
-	private Camera cam;
-	private Node rootNode;
 	
 	// Chessboard with pieces
 	private Board board = Board.getInstance();
-	
+	private float angle = 0;
+	private final float ANGLE_MAX = (float) Math.PI;
+	private AppStateManager stateManager;
+	// Rotation direction
+	private int dir = board.isShiftyPressed() ? 1 : -1;
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app)
 	{
 		super.initialize(stateManager, app);
-		SimpleApplication sapp = (SimpleApplication) app;
-		this.cam = sapp.getCamera();
-		this.rootNode = sapp.getRootNode();
-		this.inputManager = sapp.getInputManager();
+		this.stateManager = app.getStateManager();
 	}
 	
-
+	/**
+	 * Animation: rotate the board camera to the other side
+	 */
 	@Override
 	public void update(float tpf)
 	{
-		// Highlight a board square when the mouse hovers over it
-		CollisionResults results = new CollisionResults();
-		Vector2f hover2d = inputManager.getCursorPosition();
-		Vector3f hover3d = cam.getWorldCoordinates(hover2d, 0f); // depth 0
-		// 1 WU deep into the screen
-		Vector3f dir = cam.getWorldCoordinates(hover2d, 0.5f).subtractLocal(hover3d);
-		 Ray ray  = new Ray(hover3d, dir);
-		rootNode.collideWith(ray, results);
-		
-		for (CollisionResult res : results)
+		if (angle + 3 * tpf >= ANGLE_MAX)
 		{
-			// Identify a quad by e.g. @23
-			Geometry hit = res.getGeometry();
-			String hitName = hit.getName();
-			if (hitName.charAt(0) == '@')
-			{
-				hit.addControl(new QuadHoverControl());
-				break;
-			}
+			board.rotateBoardCam(ANGLE_MAX - angle);
+			this.stateManager.detach(this);
 		}
+		
+		board.rotateBoardCam((float) dir * 3 * tpf);
+		
+		angle += 3 * tpf;
 	}
 	
 	@Override

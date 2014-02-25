@@ -1,5 +1,7 @@
 package control;
 
+import java.util.Random;
+
 import utils.PP;
 import utils.Util;
 import chess.Board;
@@ -22,6 +24,9 @@ public class PieceCapturedControl extends StagedControl
 	private static MaterialFactory factory = MaterialFactory.getInstance();
 	
 	Piece captured;
+	float alphaThresh = 0f; // alphaFallOff threshold
+	Random rand = new Random();
+	Vector3f randRotate;
 
 	@Override
 	protected void controlInit(float tpf)
@@ -37,14 +42,21 @@ public class PieceCapturedControl extends StagedControl
 		}
 		captured.setQueueBucket(Bucket.Transparent);
 		captured.setShadowMode(ShadowMode.Off);
+		// Dissolve after random rotation
+		randRotate = new Vector3f(
+				rand.nextInt(5) * tpf * (rand.nextFloat() - 0.5f),
+				rand.nextInt(5) * tpf * (rand.nextFloat() - 0.5f),
+				rand.nextInt(5) * tpf * (rand.nextFloat() - 0.5f));
 	}
 
 	@Override
 	protected void controlProcess(float tpf)
 	{
-		captured.move(new Vector3f(0, tpf, 0));
-		
-		detach(captured.getLocalTranslation().y > 6);
+		captured.move(new Vector3f(0, 2 * tpf, 0));
+		captured.rotate(randRotate.x, randRotate.y, randRotate.z);
+		// Dissolving effect
+		factory.setAlphaFallOff(captured, alphaThresh += 0.5f * tpf);
+		detach(alphaThresh >= 1f);
 	}
 
 	@Override

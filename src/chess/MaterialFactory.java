@@ -6,6 +6,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.util.SkyFactory;
 
@@ -66,7 +67,7 @@ public class MaterialFactory
 		Material mat = new Material(assetManager, PHONG_SHADER);
 		mat.setBoolean("UseMaterialColors", true);
     	mat.setColor("Diffuse", color);
-    	mat.setColor("Ambient", ColorRGBA.LightGray);
+    	mat.setColor("Ambient", ColorRGBA.White);
     	mat.setColor("Specular", ColorRGBA.White);
     	mat.setFloat("Shininess", 60f);
     	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Marble/black_marble.jpg"));
@@ -83,6 +84,14 @@ public class MaterialFactory
     	// above alpha will be rendered
     	mat.getAdditionalRenderState().setAlphaFallOff(0f);
     	return mat;
+	}
+	
+	/**
+	 * portion < alphaThresh will not be rendered.
+	 */
+	public void setAlphaFallOff(Geometry obj, float alphaThresh)
+	{
+		obj.getMaterial().getAdditionalRenderState().setAlphaFallOff(alphaThresh);
 	}
 	
 	/**
