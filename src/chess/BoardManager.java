@@ -5,6 +5,8 @@ import static chess.Board.*;
 import static utils.Util.toSq;
 import static utils.Util.toXY;
 
+import java.util.Arrays;
+
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 
@@ -36,6 +38,11 @@ public class BoardManager
 	public BoardManager(Node rootNode)
 	{
 		this.rootNode = rootNode;
+		
+		// Initialize to default values
+		Arrays.fill(boardPieces, NON);
+		Arrays.fill(boardSides, -1);
+		
 		this.parseFEN(FEN_START);
 	}
 	
@@ -63,7 +70,16 @@ public class BoardManager
 	/**
 	 * Is the color of the piece at sq white?
 	 */
-	public boolean isWhite(int sq) {	return this.boardSides[sq] == W;	}
+	public boolean isWhite(int sq) {	return this.boardSides[sq] == W;	}/**
+
+	/*
+	 * If the pieces on two squares are friendly pieces
+	 */
+	public boolean isSameSide(int sq1, int sq2)
+	{
+		return boardSides[sq1] == boardSides[sq2];
+	}
+	
 	
 	/**
 	 * Removes the piece, its side and its model
@@ -78,14 +94,6 @@ public class BoardManager
 		return removed;
 	}
 	
-	/**
-	 * Remove the rendering of a model, detach from RootNode.
-	 */
-	public void detach(Piece model)
-	{
-		if (model != null)
-    		this.rootNode.detachChild(model);
-	}
 	
 	/**
 	 * Moves a piece from sq1 to sq2 and removes anything on sq2
@@ -110,8 +118,7 @@ public class BoardManager
 	public PieceMoveControl moveControl(String quadName)
 	{
 		int sq = Integer.parseInt(quadName.substring(1));
-		// PieceMoveControl updates the board keeping
-		return new PieceMoveControl(sq, this);
+		return new PieceMoveControl(sq);
 	}
 	
 	/**

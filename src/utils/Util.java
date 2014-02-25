@@ -1,5 +1,7 @@
 package utils;
 
+import chess.Piece;
+
 import com.jme3.math.*;
 import com.jme3.scene.*;
 
@@ -30,6 +32,12 @@ public class Util
                         		.getMaterial().getParam("Color").getValue();
 	}
 	
+	public static ColorRGBA getColor(Piece piece)
+	{
+		return (ColorRGBA) (piece
+                        		.getMaterial().getParam("Diffuse").getValue());
+	}
+
 	public static void setColor(Spatial spatial, ColorRGBA c)
 	{
 		((Geometry) spatial).getMaterial().setColor("Color", c);

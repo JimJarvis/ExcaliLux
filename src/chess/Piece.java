@@ -33,6 +33,7 @@ public class Piece extends Geometry
 		{"", "Pawn", "Knight", "Bishop", "Rook", "Queen", "King"};
 	
 	private int type; // piece type
+	private int side; // White or Black
 	private int x; // file
 	private int y; // rank
 	
@@ -41,7 +42,7 @@ public class Piece extends Geometry
 	 * the Board will keep track of which Piece is on that square
 	 * when we do the ray hitting selection. 
 	 */
-	public Piece(Geometry model, int type, Material mat, int x, int y)
+	public Piece(Geometry model, int type, Material mat, int side, int x, int y)
 	{
 		// Copy ctor
 		super("*" + type, model.getMesh());
@@ -50,6 +51,7 @@ public class Piece extends Geometry
 		this.setLocalTranslation(model.getLocalTranslation());
 		
 		this.type = type;
+		this.side = side;
 		this.setMaterial(mat);
 		// Adding shadow: both cast and receive
 		this.setShadowMode(ShadowMode.CastAndReceive);
@@ -72,6 +74,8 @@ public class Piece extends Geometry
 	public int getX() {	return this.x;	}
 	public int getY() {	return this.y;	}
 	public int getSq() {	return Util.toSq(x, y);	}
+	
+	public int getSide() {	return this.side;	}
 	
 	public static String name(int p) {	return PIECE_NAMES[p];	}
 	

@@ -12,7 +12,7 @@ import com.jme3.scene.control.AbstractControl;
 /**
  * When the quad is under the selected piece
  */
-public class QuadSelectControl extends AbstractControl
+public class QuadSelectedControl extends AbstractControl
 {
 	private Board board = Board.getInstance();
 	

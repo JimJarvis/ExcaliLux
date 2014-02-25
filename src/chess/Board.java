@@ -51,14 +51,14 @@ public class Board
 	private Geometry boardQuads[] = new Geometry[SQ_N];
 	
 	// Housekeeper
-	private BoardManager boardKeeper;
+	private BoardManager boardManager;
 	
 	/* Material texture configuration */
 	private Material lightQuadMat; // for board color
 	private Material darkQuadMat;
 	private Material lightPieceMat; // for pieces
 	private Material darkPieceMat;
-	private int modelSet = 1; // which set of 3D models to be used
+	private int modelIndex = 1; // which set of 3D models to be used
 	
 	/**
 	 * Should only be called once at main()
@@ -86,7 +86,7 @@ public class Board
 		this.stateManager = app.getStateManager();
 		this.cam = app.getCamera();
 		
-    	boardKeeper = new BoardManager(rootNode);
+    	boardManager = new BoardManager(rootNode);
 
 		// Lay out the board made of quads
 		setQuadMaterial(factory.loadPlain(ColorRGBA.Brown), 
@@ -102,7 +102,11 @@ public class Board
 	/**
 	 * Set the 3D mesh model set
 	 */
-	public void setModelSet(int modelSet) {	this.modelSet = modelSet;	}
+	public void setModelIndex(int modelIndex) {	this.modelIndex = modelIndex;	}
+	
+	public int getModelIndex() {	return this.modelIndex;	}
+	
+	public BoardManager getBoardManager() {	return this.boardManager;	}
 	
 	/**
 	 * Set the material for the pieces
@@ -134,19 +138,19 @@ public class Board
 		for (int y = 0; y < RANK_N; y++)
     		for (int x = 0; x < FILE_N; x++)
     		{
-				int p = boardKeeper.getPiece(sq);
+				int p = boardManager.getPiece(sq);
 				
 				Piece piece = null;
 				if (p != NON)
 				{
 					piece = new Piece(
-							(Geometry) assetManager.loadModel("Models/" + Piece.name(p) + this.modelSet + ".j3o"),
+							(Geometry) assetManager.loadModel("Models/" + Piece.name(p) + this.modelIndex + ".j3o"),
 							p,  // specify the piece type
-							boardKeeper.isWhite(sq) ? this.lightPieceMat : this.darkPieceMat,
-							x, y);
+							boardManager.isWhite(sq) ? this.lightPieceMat : this.darkPieceMat,
+							boardManager.getSide(sq), x, y);
 					rootNode.attachChild(piece);
 				}
-				boardKeeper.setModel(sq++, piece);
+				boardManager.setModel(sq++, piece);
     		}
 	}
 	
@@ -175,6 +179,15 @@ public class Board
 	}
 	
 	public Geometry getQuad(int sq) {	return this.boardQuads[sq];	}
+	
+	/**
+	 * Remove the rendering of a model, detach from RootNode.
+	 */
+	public void detach(Piece model)
+	{
+		if (model != null)
+    		this.rootNode.detachChild(model);
+	}
 
 
 	/******************** Input Processing ********************/
@@ -236,7 +249,7 @@ public class Board
 	    					if (selectedPiece != null)
 	    					{
 	    						selectedPiece.addControl(
-	    									boardKeeper.moveControl(hitName));
+	    									boardManager.moveControl(hitName));
 	    						stateManager.detach(quadHighlightState);
 	    						selectedPiece = null;
 	    					}

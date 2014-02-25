@@ -12,19 +12,17 @@ import com.jme3.scene.control.AbstractControl;
  */
 public class PieceMoveControl extends AbstractControl
 {
-	int newSq;
-	int newX;
-	int newY;
-	BoardManager board;
+	private int newSq;
+	private int newX;
+	private int newY;
+	private BoardManager board = Board.getInstance().getBoardManager() ;
 	
-	public PieceMoveControl(int sq, BoardManager board)
+	public PieceMoveControl(int sq)
 	{
 		this.newSq = sq;
 		int[] newXY = Util.toXY(sq);
 		this.newX = newXY[0];
 		this.newY = newXY[1];
-
-		this.board = board;
 	}
 
 
@@ -34,11 +32,16 @@ public class PieceMoveControl extends AbstractControl
 		Piece me = (Piece) spatial;
 		int oldSq = me.getSq();
 		
-		if (newSq != oldSq)
+		// We don't do anything if we're trying to capture a friendly piece
+		if (newSq != oldSq &&
+				board.getSide(oldSq) != board.getSide(newSq))
 		{
     		Piece captured = board.move(oldSq, newSq);
-    		// Remove the captured model from the scene
-    		board.detach(captured);
+    		
+    		// Takes care of the dissolving away effect
+    		if (captured != null)
+    			captured.addControl(new PieceCapturedControl());
+    		
     		me.locate(newX, newY);
 		}
 		
@@ -47,9 +50,6 @@ public class PieceMoveControl extends AbstractControl
 	}
 
 	@Override
-	protected void controlRender(RenderManager rm, ViewPort vp)
-	{
-	}
-
+	protected void controlRender(RenderManager rm, ViewPort vp) { }
 	
 }

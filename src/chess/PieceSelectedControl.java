@@ -14,7 +14,7 @@ public class PieceSelectedControl extends AbstractControl
 	private Board board = Board.getInstance();
 	
 	private Geometry quad = null;
-	private QuadSelectControl selectControl;
+	private QuadSelectedControl selectControl;
 	
 	@Override
 	protected void controlUpdate(float tpf)
@@ -27,7 +27,7 @@ public class PieceSelectedControl extends AbstractControl
 		if (quad == null)
 		{
 			quad = board.getQuadUnderSelectedPiece();
-			selectControl = new QuadSelectControl();
+			selectControl = new QuadSelectedControl();
 			quad.addControl(selectControl);
 		}
 		
