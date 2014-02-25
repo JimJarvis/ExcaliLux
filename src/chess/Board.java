@@ -48,10 +48,10 @@ public class Board
 	private MaterialFactory factory = MaterialFactory.getInstance();
 
 	// Quad board
-	private Geometry quadBoardModels[] = new Geometry[SQ_N];
+	private Geometry boardQuads[] = new Geometry[SQ_N];
 	
-	// Piece meshes
-	private Piece pieceModels[] = new Piece[SQ_N];
+	// Housekeeper
+	private BoardManager boardKeeper;
 	
 	/* Material texture configuration */
 	private Material lightQuadMat; // for board color
@@ -60,16 +60,19 @@ public class Board
 	private Material darkPieceMat;
 	private int modelSet = 1; // which set of 3D models to be used
 	
-	/* Chess stats */
-	// What pieces are on the board?
-	private int boardPiece[] = new int[SQ_N];
-	// What piece colors (sides) are on the board?
-	private int boardSide[] = new int[SQ_N];
-	private int turn; // whose turn? White or Black?
-	// Castling rights
-	// Castling encoding: 2 bits, msb = O-O-O, lsb = O-O
-	// &1 get kingside; &2 get queenside; &=1 delete queenside; &=2 delete kingside
-	private int castleRights[] = new int[SIDE_N];
+	/**
+	 * Should only be called once at main()
+	 */
+	public static void setup(SimpleApplication app)
+	{
+		if (instance == null)
+			instance = new Board(app);
+	}
+	
+	/**
+	 * Singleton pattern
+	 */
+	public static Board getInstance() {	return instance;	}
 	
 	
 	/**
@@ -83,13 +86,12 @@ public class Board
 		this.stateManager = app.getStateManager();
 		this.cam = app.getCamera();
 		
+    	boardKeeper = new BoardManager(rootNode);
+
 		// Lay out the board made of quads
 		setQuadMaterial(factory.loadPlain(ColorRGBA.Brown), 
                     		factory.loadPlain(ColorRGBA.LightGray));
 		renderQuadBoard();
-		
-		// Put the default pieces
-		parseFEN(FEN_START);
 
 		// Re-render the scene
 		setPieceMaterial(factory.loadMarble(ColorRGBA.White),
@@ -120,20 +122,6 @@ public class Board
 		this.darkQuadMat = darkMat;
 	}
 	
-	/**
-	 * Should only be called once at main()
-	 */
-	public static void setup(SimpleApplication app)
-	{
-		if (instance == null)
-			instance = new Board(app);
-	}
-	
-	/**
-	 * Singleton pattern
-	 */
-	public static Board getInstance() {	return instance;	}
-	
 	
 	/******************** Rendering ********************/
 	/**
@@ -146,18 +134,19 @@ public class Board
 		for (int y = 0; y < RANK_N; y++)
     		for (int x = 0; x < FILE_N; x++)
     		{
-				int p = boardPiece[sq];
+				int p = boardKeeper.getPiece(sq);
 				
 				Piece piece = null;
 				if (p != NON)
 				{
 					piece = new Piece(
-							(Geometry) assetManager.loadModel("Models/" + PIECE_NAMES[p] + this.modelSet + ".j3o"),
-							"*" + PIECE_NAMES[p],  // Piece names always start with asterisk
-							boardSide[sq] == W ? this.lightPieceMat : this.darkPieceMat, x, y);
+							(Geometry) assetManager.loadModel("Models/" + Piece.name(p) + this.modelSet + ".j3o"),
+							p,  // specify the piece type
+							boardKeeper.isWhite(sq) ? this.lightPieceMat : this.darkPieceMat,
+							x, y);
 					rootNode.attachChild(piece);
 				}
-    			this.pieceModels[sq ++] = piece;
+				boardKeeper.setModel(sq++, piece);
     		}
 	}
 	
@@ -180,11 +169,13 @@ public class Board
     			// Floor only receives shadow
     			quad.setShadowMode(ShadowMode.Receive);
     			
-    			this.quadBoardModels[sq ++] = quad;
+    			this.boardQuads[sq ++] = quad;
     			rootNode.attachChild(quad);
     		}
 	}
 	
+	public Geometry getQuad(int sq) {	return this.boardQuads[sq];	}
+
 
 	/******************** Input Processing ********************/
 	
@@ -199,10 +190,18 @@ public class Board
 		MAP_4 = "4";
 	
 	// State managing
-	private QuadHighlightState quadHighlightState = new QuadHighlightState();
+	private QuadHoverState quadHighlightState = new QuadHoverState();
 	
 	// indicates which one is selected. null if none
 	private Piece selectedPiece = null;
+	
+	public Piece getSelectedPiece() {	return selectedPiece;	}
+	
+	public Geometry getQuadUnderSelectedPiece()
+	{
+		return selectedPiece != null ? 
+				boardQuads[selectedPiece.getSq()] : null;
+	}
 		
 	/**
 	 * Mouse listener: selects pieces
@@ -236,18 +235,23 @@ public class Board
 	    					// and detach the SelectionControl
 	    					if (selectedPiece != null)
 	    					{
-	    						selectedPiece.addControl(new PieceMoveControl(getQuadCoord(hitName)));
+	    						selectedPiece.addControl(
+	    									boardKeeper.moveControl(hitName));
 	    						stateManager.detach(quadHighlightState);
+	    						selectedPiece = null;
 	    					}
     	    				break;
 	    				}
 	    				else if (hitName.charAt(0) == '*') // hits a piece
 	    				{
-	    					deselect();
-	    					selectedPiece = (Piece) hit;
-    						selectedPiece.addControl(new PieceSelectedControl());
-    						// If a piece is selected, we allow quad highlighting
-    						stateManager.attach(quadHighlightState);
+	    					Piece hitPiece = (Piece) hit;
+	    					if (hitPiece != selectedPiece)
+	    					{
+    	    					selectedPiece = hitPiece;
+        						selectedPiece.addControl(new PieceSelectedControl());
+        						// If a piece is selected, we allow quad highlighting
+        						stateManager.attach(quadHighlightState);
+	    					}
     	    				break;
 	    				}
 					}
@@ -255,7 +259,7 @@ public class Board
 				// Right click
 				else if (name.equals(MAP_DESELECT))
 				{
-					deselect();
+					selectedPiece = null;
 					stateManager.detach(quadHighlightState);
 				}
 					
@@ -263,22 +267,11 @@ public class Board
 		};
 	}
 	
-	// helper: remove selection
-	private void deselect()
-	{
-		if (selectedPiece != null)
-			selectedPiece.removeControl(PieceSelectedControl.class);
-	}
-	
-	public int[] getQuadCoord(String name)
-	{
-		return toXY(Integer.parseInt(name.substring(1)));
-	}
 	
 	/**
-	 * Keyboard listener: changes models or piece/board material
+	 * Keyboard listener: chooses a new set of models or piece/board material
 	 */
-	public ActionListener changeListener()
+	public ActionListener choiceListener()
 	{
 		return new ActionListener()
 		{
@@ -287,77 +280,6 @@ public class Board
 			{
 			}
 		};
-	}
-	
-	
-	/******************** Chess-related ********************/
-	/**
-	 * Default start position FEN string
-	 */
-	public static final String FEN_START = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
-	
-	/**
-	 * Parse an FEN string and update the board record.
-	 * No re-rendering
-	 */
-	private void parseFEN(String fen)
-	{
-		int rank = 7; // FEN starts from the top rank
-		int file = 0; // left most file
-		
-		char ch; int i = 0;
-		while ((ch = fen.charAt(i ++)) != ' ')
-		{
-			if (ch == '/') // move down a rank
-			{
-				-- rank;
-				file = 0;
-			}
-			else if (Character.isDigit(ch)) // number means blank square, pass
-				file += ch - '0';
-			else
-			{
-				int side = Character.isUpperCase(ch) ? W : B;
-				ch = Character.toLowerCase(ch);
-				int piece = NON;
-				switch (ch)
-				{
-				case 'p': piece = PAWN; break;
-				case 'n': piece = KNIGHT; break;
-				case 'b': piece = BISHOP; break;
-				case 'r': piece = ROOK; break;
-				case 'q': piece = QUEEN; break;
-				case 'k': piece = KING; break;
-				}
-				// TODO add bit masks here
-				int sq = toSq(file, rank);
-				
-				this.boardPiece[sq] = piece;
-				this.boardSide[sq] = side;
-				
-				++ file;
-			}
-		}
-		
-		this.turn = fen.charAt(i ++) == 'w' ? W : B;
-		i ++; // consume the white space
-		
-		// castling status, '-' if none available
-		while ((ch = fen.charAt(i++)) != ' ')
-		{
-			int side = Character.isUpperCase(ch) ? W : B;
-			ch = Character.toLowerCase(ch);
-			switch (ch)
-			{
-			case 'k': castleRights[side] |= 1; break;
-			case 'q': castleRights[side] |= 2; break;
-			case '-': continue;
-			}
-		}
-		
-		// TODO enpassent square here
-		// TODO fifty move and half move counter
-		
 	}
 	
 	

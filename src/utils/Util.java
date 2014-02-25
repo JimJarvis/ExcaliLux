@@ -1,8 +1,7 @@
 package utils;
 
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
-import com.jme3.math.Vector3f;
+import com.jme3.math.*;
+import com.jme3.scene.*;
 
 /**
  * Useful utility functions
@@ -20,6 +19,20 @@ public class Util
 	public static ColorRGBA color(int R, int G, int B)
 	{
 		return color(R, G, B, 1f);
+	}
+	
+	/**
+	 * Ugly way to retrieve color from a material config
+	 */
+	public static ColorRGBA getColor(Spatial spatial)
+	{
+		return (ColorRGBA) ((Geometry) spatial)
+                        		.getMaterial().getParam("Color").getValue();
+	}
+	
+	public static void setColor(Spatial spatial, ColorRGBA c)
+	{
+		((Geometry) spatial).getMaterial().setColor("Color", c);
 	}
 	
 	/**
@@ -41,16 +54,16 @@ public class Util
 		return new int[] {pos & 7, pos >> 3};
 	}
 	
-	public static Vector3f toVec3f(double x, double y, double z)
-	{
-		return new Vector3f((float) x, (float) y, (float) z);
-	}
-	
 	/**
 	 * rank + file coordinate to square
 	 */
 	public static int toSq(int file, int rank)
 	{
 		return (rank << 3) + file;  // y * 8 + 8
+	}
+	
+	public static Vector3f toVec3f(double x, double y, double z)
+	{
+		return new Vector3f((float) x, (float) y, (float) z);
 	}
 }

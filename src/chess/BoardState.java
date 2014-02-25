@@ -96,7 +96,7 @@ public class BoardState extends AbstractAppState
 		inputManager.addMapping(MAP_4, TRIGGER_4);
 		
 		inputManager.addListener(board.mouseListener(), MAP_SELECT, MAP_DESELECT);
-		inputManager.addListener(board.changeListener(), 
+		inputManager.addListener(board.choiceListener(), 
 					MAP_BOARD, MAP_MODEL, MAP_1, MAP_2, MAP_3, MAP_4);
 		
 		

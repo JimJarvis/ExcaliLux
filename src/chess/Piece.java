@@ -3,12 +3,9 @@ package chess;
 import utils.PP;
 import utils.Util;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 
 import static chess.Board.*;
 
@@ -35,23 +32,24 @@ public class Piece extends Geometry
 	public static final String PIECE_NAMES[] = 
 		{"", "Pawn", "Knight", "Bishop", "Rook", "Queen", "King"};
 	
+	private int type; // piece type
 	private int x; // file
 	private int y; // rank
 	
 	/**
-	 * A new chess piece
-	 * The name will simply be a 0-63 square number
+	 * A new chess piece. Name always starts with '*
 	 * the Board will keep track of which Piece is on that square
 	 * when we do the ray hitting selection. 
 	 */
-	public Piece(Geometry model, String name, Material mat, int x, int y)
+	public Piece(Geometry model, int type, Material mat, int x, int y)
 	{
 		// Copy ctor
-		super(name, model.getMesh());
+		super("*" + type, model.getMesh());
 		this.setLocalRotation(model.getLocalRotation());
 		this.setLocalScale(model.getLocalScale());
 		this.setLocalTranslation(model.getLocalTranslation());
 		
+		this.type = type;
 		this.setMaterial(mat);
 		// Adding shadow: both cast and receive
 		this.setShadowMode(ShadowMode.CastAndReceive);
@@ -74,4 +72,9 @@ public class Piece extends Geometry
 	public int getX() {	return this.x;	}
 	public int getY() {	return this.y;	}
 	public int getSq() {	return Util.toSq(x, y);	}
+	
+	public static String name(int p) {	return PIECE_NAMES[p];	}
+	
+	// WARNING: do NOT override Geometry super class method getName()!!!
+	public String name() {	return PIECE_NAMES[type];	}
 }

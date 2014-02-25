@@ -25,7 +25,7 @@ import com.jme3.shadow.DirectionalLightShadowFilter;
 import com.jme3.shadow.DirectionalLightShadowRenderer;
 import com.jme3.shadow.SpotLightShadowRenderer;
 
-public class QuadHighlightState extends AbstractAppState
+public class QuadHoverState extends AbstractAppState
 {
 	private SimpleApplication app;
 	private InputManager inputManager;
@@ -66,7 +66,7 @@ public class QuadHighlightState extends AbstractAppState
 			String hitName = hit.getName();
 			if (hitName.charAt(0) == '@')
 			{
-				hit.addControl(new QuadHighlightControl(ColorRGBA.Yellow));
+				hit.addControl(new QuadHoverControl());
 				break;
 			}
 		}

@@ -1,6 +1,7 @@
 package chess;
 
 import utils.PP;
+import utils.Util;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.*;
@@ -9,28 +10,25 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
-public class QuadHighlightControl extends AbstractControl
+public class QuadHoverControl extends AbstractControl
 {
-	ColorRGBA c;
+	private static final ColorRGBA HIGH_COLOR = ColorRGBA.Yellow;
+
 	// This variable is used to implement the "one-off" behavior
 	// The highlighted quad should stay high only as long as the mouse hovers over it. 
-	boolean highlighted = false;
-	ColorRGBA original;
+	private boolean highlighted = false;
+	private ColorRGBA original;
 	
-	public QuadHighlightControl(ColorRGBA c)
-	{
-		this.c = c;
-	}
-
 	@Override
 	protected void controlUpdate(float tpf)
 	{
+		// SelectedControl and HoverControl are mutually exclusive. 
+		if (spatial == null) return; // means it's already detached
+		
 		if (!highlighted)
 		{
-    		this.original = 
-    				(ColorRGBA) ((Geometry) this.spatial)
-    										.getMaterial().getParam("Color").getValue();
-			setColor(this.c);
+    		this.original = Util.getColor(spatial);
+			setColor(HIGH_COLOR);
 			highlighted = true;
 		}
 		else
@@ -42,13 +40,10 @@ public class QuadHighlightControl extends AbstractControl
 	
 	private void setColor(ColorRGBA c)
 	{
-		((Geometry) spatial).getMaterial().setColor("Color", c);
+		Util.setColor(spatial, c);
 	}
 
 	@Override
-	protected void controlRender(RenderManager rm, ViewPort vp)
-	{
-	}
-
+	protected void controlRender(RenderManager rm, ViewPort vp) { }
 	
 }
