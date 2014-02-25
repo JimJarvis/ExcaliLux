@@ -13,43 +13,33 @@ import com.jme3.scene.control.AbstractControl;
 /**
  * When the quad is under the selected piece
  */
-public class QuadSelectedControl extends AbstractControl
+public class QuadSelectedControl extends StagedControl
 {
 	private Board board = Board.getInstance();
 	
 	private static final ColorRGBA HIGH_COLOR = ColorRGBA.Green;
 	private ColorRGBA original;
-	private boolean detached = false;
-	private boolean colorSet = false;
 	
 	@Override
-	protected void controlUpdate(float tpf)
+	protected void controlInit(float tpf)
+	{
+		if (original == null)
+			original = Util.getColor(spatial);
+		Util.setColor(spatial, HIGH_COLOR);
+	}
+
+	@Override
+	protected void controlProcess(float tpf)
 	{
 		// We don't want hovering to be activated on the selected quad
 		spatial.removeControl(QuadHoverControl.class);
-		if (original == null)
-			original = Util.getColor(spatial);
-
-		if (!detached)
-		{
-			if (!colorSet)
-			{
-				Util.setColor(spatial, HIGH_COLOR);
-				colorSet = true;
-			}
-		}
-		else // detach and restore the old color
-		{
-			Util.setColor(spatial, original);
-			spatial.removeControl(this);
-		}
-		
 	}
-	
-	// Destroy this control object
-	public void detach() {	detached = true;	}
 
 	@Override
-	protected void controlRender(RenderManager rm, ViewPort vp) { }
+	protected void controlDetach()
+	{
+		// Restore the old color
+		Util.setColor(spatial, original);
+	}
 	
 }

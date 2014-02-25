@@ -13,12 +13,15 @@ import com.jme3.scene.control.AbstractControl;
  * @author Jim Fan  (c) 2014
  * Moves the piece and updates the BoardManager
  */
-public class PieceMoveControl extends AbstractControl
+public class PieceMoveControl extends StagedControl
 {
 	private int newSq;
 	private int newX;
 	private int newY;
 	private BoardManager board = Board.getInstance().getBoardManager() ;
+	
+	private Piece me;
+	private int oldSq;
 	
 	public PieceMoveControl(int sq)
 	{
@@ -30,11 +33,15 @@ public class PieceMoveControl extends AbstractControl
 
 
 	@Override
-	protected void controlUpdate(float tpf)
+	protected void controlInit(float tpf)
 	{
-		Piece me = (Piece) spatial;
-		int oldSq = me.getSq();
-		
+		me = (Piece) this.spatial;
+		oldSq = me.getSq();
+	}
+
+	@Override
+	protected void controlProcess(float tpf)
+	{
 		// We don't do anything if we're trying to capture a friendly piece
 		if (newSq != oldSq &&
 				board.getSide(oldSq) != board.getSide(newSq))
@@ -48,11 +55,13 @@ public class PieceMoveControl extends AbstractControl
     		me.locate(newX, newY);
 		}
 		
-		me.removeControl(PieceSelectedControl.class);
-		me.removeControl(this);
+		detach(); // unconditional exit after one update.
 	}
 
 	@Override
-	protected void controlRender(RenderManager rm, ViewPort vp) { }
+	protected void controlDetach()
+	{
+		me.removeControl(PieceSelectedControl.class);
+	}
 	
 }

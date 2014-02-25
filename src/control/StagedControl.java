@@ -11,7 +11,6 @@ import com.jme3.scene.control.AbstractControl;
  */
 public abstract class StagedControl extends AbstractControl
 {
-	
 	private enum Stage { Init, Update, Detach };
 	// Phase tracker
 	private Stage stage = Stage.Init;
@@ -41,7 +40,20 @@ public abstract class StagedControl extends AbstractControl
 	/**
 	 * Call this inside controlProcess() to enter the last stage
 	 */
-	public void detach() {		stage = Stage.Detach;	}
+	public void detach() {	stage = Stage.Detach;		}
+	
+	/**
+	 * @param condition detach when condition is true
+	 */
+	public void detach(boolean condition)
+	{	
+		if (condition)		stage = Stage.Detach;
+	}
+	
+	/**
+	 * Return to Stage.Init
+	 */
+	public void reinit() {	stage = Stage.Init;	}
 
 	@Override
 	protected void controlUpdate(float tpf)
@@ -49,15 +61,19 @@ public abstract class StagedControl extends AbstractControl
 		if (stage == Stage.Init)
 		{
 			controlInit(tpf);
-			stage = Stage.Update;
-		}
-		else if (stage == Stage.Detach)
-		{
-			controlDetach();
-			spatial.removeControl(this);
+			if (stage != Stage.Detach)
+    			stage = Stage.Update;
 		}
 		
-		controlProcess(tpf);
+		if (stage == Stage.Update)
+    		controlProcess(tpf);
+
+		if (stage == Stage.Detach)
+		{
+			controlDetach();
+			if (spatial != null)
+    			spatial.removeControl(this);
+		}
 	}
 
 	@Override
