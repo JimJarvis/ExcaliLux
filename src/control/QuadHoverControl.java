@@ -1,15 +1,15 @@
 package control;
 
-import utils.PP;
 import utils.Util;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.*;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
+/**
+ * @author Jim Fan  (c) 2014
+ * Highlights the quad when the mouse hovers over it
+ */
 public class QuadHoverControl extends AbstractControl
 {
 	private static final ColorRGBA HIGH_COLOR = ColorRGBA.Yellow;

@@ -12,6 +12,9 @@ import com.jme3.util.SkyFactory;
 
 /**
  * @author Jim Fan  (c) 2014
+ * Providing my own GLSL shaders and J3ME material definition. 
+ * The transparent materials are made in photoshop. 
+ * Nice collection. Still adding more. 
  */
 public class MaterialFactory
 {
@@ -77,9 +80,81 @@ public class MaterialFactory
 	public Material loadMarbleTransparent(ColorRGBA color)
 	{
 		Material mat = loadMarble(color);
+		return makeTransparent(mat, "Marble/black_marble");
+	}
+	
+	public Material loadRosewood(ColorRGBA color)
+	{
+		Material mat = new Material(assetManager, PHONG_SHADER);
+		mat.setBoolean("UseMaterialColors", true);
+    	mat.setColor("Diffuse", color);
+    	mat.setColor("Ambient", ColorRGBA.Brown);
+    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Wood/rosewood.jpg"));
+    	return mat;
+	}
+	
+	public Material loadRosewoodTransparent(ColorRGBA color)
+	{
+		Material mat = loadRosewood(color);
+		return makeTransparent(mat, "Wood/rosewood");
+	}
+	
+	public Material loadBrownwood(ColorRGBA color)
+	{
+		Material mat = new Material(assetManager, PHONG_SHADER);
+		mat.setBoolean("UseMaterialColors", true);
+    	mat.setColor("Diffuse", color);
+    	mat.setColor("Ambient", ColorRGBA.Brown);
+    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Wood/brown_wood.jpg"));
+    	return mat;
+	}
+	
+	public Material loadBrownwoodTransparent(ColorRGBA color)
+	{
+		Material mat = loadBrownwood(color);
+		return makeTransparent(mat, "Wood/brown_wood");
+	}
+	
+	public Material loadIvory(ColorRGBA color)
+	{
+		Material mat = new Material(assetManager, PHONG_SHADER);
+		mat.setBoolean("UseMaterialColors", true);
+    	mat.setColor("Diffuse", color);
+    	mat.setColor("Ambient", ColorRGBA.DarkGray);
+    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Ivory/ivory.jpg"));
+    	return mat;
+	}
+	
+	public Material loadIvoryTransparent(ColorRGBA color)
+	{
+		Material mat = loadIvory(color);
+		return makeTransparent(mat, "Ivory/ivory");
+	}
+	
+	public Material loadFlorenceMarble(ColorRGBA color)
+	{
+		Material mat = new Material(assetManager, PHONG_SHADER);
+		mat.setBoolean("UseMaterialColors", true);
+    	mat.setColor("Diffuse", color);
+    	mat.setColor("Ambient", ColorRGBA.DarkGray);
+    	mat.setColor("Specular", ColorRGBA.White);
+    	mat.setFloat("Shininess", 20f);
+    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Marble/florence_marble.jpg"));
+    	return mat;
+	}
+	
+	public Material loadFlorenceMarbleTransparent(ColorRGBA color)
+	{
+		Material mat = loadFlorenceMarble(color);
+		return makeTransparent(mat, "Marble/florence_marble");
+	}
+	
+	private Material makeTransparent(Material mat, String fileName)
+	{
 		// PNG image with alpha channel
-		mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Marble/black_marble.png"));
-    	mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
+		mat.setTexture("DiffuseMap", 
+				assetManager.loadTexture("Textures/" + fileName + ".png"));
+		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
     	mat.getAdditionalRenderState().setAlphaTest(true);
     	// above alpha will be rendered
     	mat.getAdditionalRenderState().setAlphaFallOff(0f);

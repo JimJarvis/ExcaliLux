@@ -1,6 +1,5 @@
 package chess;
 
-import utils.PP;
 import utils.Util;
 
 import com.jme3.material.Material;
@@ -11,6 +10,7 @@ import static chess.Board.*;
 
 /**
  * @author Jim Fan  (c) 2014
+ * Represents a piece with a mesh. 
  */
 public class Piece extends Geometry
 {

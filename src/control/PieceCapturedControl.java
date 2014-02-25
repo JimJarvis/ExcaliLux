@@ -2,17 +2,15 @@ package control;
 
 import java.util.Random;
 
-import utils.PP;
 import utils.Util;
 import chess.Board;
 import chess.MaterialFactory;
 import chess.Piece;
 
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.renderer.*;
 import com.jme3.renderer.queue.RenderQueue.Bucket;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.scene.control.AbstractControl;
 
 /**
  * @author Jim Fan  (c) 2014
@@ -32,14 +30,31 @@ public class PieceCapturedControl extends StagedControl
 	protected void controlInit(float tpf)
 	{
 		captured = (Piece) spatial;
-		switch (board.getModelIndex())
+		ColorRGBA c = Util.getColor(captured);
+		switch (board.getPieceMatId())
 		{
 		case 1: 
 			captured.setMaterial(
-					factory.loadMarbleTransparent(
-									Util.getColor(captured)));
+					factory.loadMarbleTransparent(c));
+			break;
+		case 2:
+			if (captured.getSide() == Piece.W)
+    			captured.setMaterial(
+    					factory.loadRosewoodTransparent(c));
+			else
+    			captured.setMaterial(
+    					factory.loadBrownwoodTransparent(c));
+			break;
+		case 3:
+			if (captured.getSide() == Piece.W)
+    			captured.setMaterial(
+    					factory.loadIvoryTransparent(c));
+			else
+    			captured.setMaterial(
+    					factory.loadFlorenceMarbleTransparent(c));
 			break;
 		}
+		
 		captured.setQueueBucket(Bucket.Transparent);
 		captured.setShadowMode(ShadowMode.Off);
 		// Dissolve after random rotation

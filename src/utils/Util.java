@@ -6,6 +6,7 @@ import com.jme3.math.*;
 import com.jme3.scene.*;
 
 /**
+ * @author Jim Fan  (c) 2014
  * Useful utility functions
  */
 public class Util

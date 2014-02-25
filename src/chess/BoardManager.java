@@ -2,18 +2,14 @@ package chess;
 
 import static chess.Piece.*;
 import static chess.Board.*;
-import static utils.Util.toSq;
-import static utils.Util.toXY;
+import static utils.Util.*;
 
 import java.util.Arrays;
-
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-
 import control.PieceMoveControl;
-import utils.Util;
 
 /**
+ * @author Jim Fan  (c) 2014
  * Keep record of the chess pieces on board
  */
 public class BoardManager

@@ -1,22 +1,16 @@
 package chess;
 
 import utils.Util;
-import static utils.PP.p;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.asset.TextureKey;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
-import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.Spatial.CullHint;
 import com.jme3.system.AppSettings;
-import com.jme3.texture.Texture;
-import com.jme3.texture.Texture2D;
-import com.jme3.util.SkyFactory;
 
 /**
  * @author Jim Fan  (c) 2014
+ * Excalibur Luxury Edition
+ * 3D Chess board.
  */
 public class ExcaliLux extends SimpleApplication
 {
@@ -66,7 +60,7 @@ public class ExcaliLux extends SimpleApplication
     	stateManager.attach(boardState);
     	
     	// Set initial camera orientation
-    	cam.setLocation(Board.coordSq(8, -5, 10.0f));
+    	cam.setLocation(Board.coordSq(8.5, -5.5, 10.0f));
     	cam.lookAt(Board.coordSq(3, 4), Vector3f.UNIT_Y);
     	
     	// Load SkyBox background texture

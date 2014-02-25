@@ -1,16 +1,12 @@
 package control;
 
-import utils.PP;
 import utils.Util;
 import chess.Board;
 
 import com.jme3.math.ColorRGBA;
-import com.jme3.renderer.*;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.control.AbstractControl;
 
 /**
+ * @author Jim Fan  (c) 2014
  * When the quad is under the selected piece
  */
 public class QuadSelectedControl extends StagedControl

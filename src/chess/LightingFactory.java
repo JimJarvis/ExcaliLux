@@ -8,6 +8,10 @@ import com.jme3.scene.Node;
 
 import static utils.Util.*;
 
+/**
+ * @author Jim Fan  (c) 2014
+ * All kinds of lighting effects
+ */
 public class LightingFactory
 {
 	private final Node rootNode;

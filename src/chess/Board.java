@@ -1,33 +1,22 @@
 package chess;
 
-import utils.Util;
-
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.audio.Listener;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.*;
 import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Matrix3f;
-import com.jme3.math.Quaternion;
-import com.jme3.math.Ray;
-import com.jme3.math.Vector2f;
-import com.jme3.math.Vector3f;
+import com.jme3.math.*;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
-import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
+import com.jme3.scene.*;
 import com.jme3.scene.shape.Quad;
 
 import control.FlipBoardState;
 import control.PieceSelectedControl;
 import control.QuadHoverState;
-import static utils.PP.p;
 import static chess.Piece.*;
 import static utils.Util.*;
 import static chess.MaterialFactory.*;
@@ -35,6 +24,7 @@ import static chess.BoardState.*;
 
 /**
  * @author Jim Fan  (c) 2014
+ * Main board renderer
  */
 public class Board
 {
@@ -62,12 +52,15 @@ public class Board
 	// Housekeeper
 	private BoardManager boardManager;
 	
+	// Use different sets of models
+	private int modelId = 1;
+	private int pieceMatId = 1;
+	
 	/* Material texture configuration */
 	private Material lightQuadMat; // for board color
 	private Material darkQuadMat;
 	private Material lightPieceMat; // for pieces
 	private Material darkPieceMat;
-	private int modelIndex = 1; // which set of 3D models to be used
 	
 	/**
 	 * Should only be called once at main()
@@ -102,29 +95,37 @@ public class Board
                     		factory.loadPlain(ColorRGBA.LightGray));
 		renderQuadBoard();
 
-		// Re-render the scene
-		setPieceMaterial(factory.loadMarble(ColorRGBA.White),
-							factory.loadMarble(Purple));
+		// Render the scene, default material/model ID = 1
+		setPieceMaterial();
 		renderPieces();
 	}
 	
-	/**
-	 * Set the 3D mesh model set
-	 */
-	public void setModelIndex(int modelIndex) {	this.modelIndex = modelIndex;	}
-	
-	public int getModelIndex() {	return this.modelIndex;	}
 	
 	public BoardManager getBoardManager() {	return this.boardManager;	}
 	
 	/**
 	 * Set the material for the pieces
 	 */
-	public void setPieceMaterial(Material lightMat, Material darkMat)
+	public void setPieceMaterial()
 	{
-		this.lightPieceMat = lightMat;
-		this.darkPieceMat = darkMat;
+		switch(this.pieceMatId)
+		{
+		case 1 : // Marble
+			lightPieceMat = factory.loadMarble(ColorRGBA.White);
+			darkPieceMat = factory.loadMarble(Purple);
+			break;
+		case 2 :
+			lightPieceMat = factory.loadRosewood(ColorRGBA.LightGray);
+			darkPieceMat = factory.loadBrownwood(ColorRGBA.Brown);
+			break;
+		case 3 :
+			lightPieceMat = factory.loadIvory(ColorRGBA.White);
+			darkPieceMat = factory.loadFlorenceMarble(ColorRGBA.Black);
+			break;
+		}
 	}
+	
+	public int getPieceMatId() {	return this.pieceMatId;	}
 	
 	/**
 	 * Set the material for the board
@@ -147,13 +148,17 @@ public class Board
 		for (int y = 0; y < RANK_N; y++)
     		for (int x = 0; x < FILE_N; x++)
     		{
+    			// First clear all old models
+    			Piece piece = null;
+    			if ((piece = boardManager.getModel(sq)) != null)
+    				rootNode.detachChild(piece);
+    					
 				int p = boardManager.getPiece(sq);
 				
-				Piece piece = null;
 				if (p != NON)
 				{
 					piece = new Piece(
-							(Geometry) assetManager.loadModel("Models/" + Piece.name(p) + this.modelIndex + ".j3o"),
+							(Geometry) assetManager.loadModel("Models/" + Piece.name(p) + this.modelId + ".j3o"),
 							p,  // specify the piece type
 							boardManager.isWhite(sq) ? this.lightPieceMat : this.darkPieceMat,
 							boardManager.getSide(sq), x, y);
@@ -290,7 +295,20 @@ public class Board
 			@Override
 			public void onAction(String name, boolean isPressed, float tpf)
 			{
-				
+				if (isPressed)
+				{
+					// Get the ID of a set of models/piece/board material
+					int id = Integer.parseInt(name);
+					
+					if (isShiftPressed)
+						Board.this.modelId = id;
+					else
+					{
+    					Board.this.pieceMatId = id;
+    					setPieceMaterial();
+					}
+					renderPieces();
+				}
 			}
 		};
 	}

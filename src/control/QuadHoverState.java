@@ -1,31 +1,20 @@
 package control;
 
-import static utils.PP.p;
-import static utils.Util.*;
-import static chess.Board.*;
 import chess.Board;
 
 import com.jme3.app.*;
 import com.jme3.app.state.*;
-import com.jme3.asset.AssetManager;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.*;
-import com.jme3.input.controls.*;
-import com.jme3.light.*;
 import com.jme3.math.*;
-import com.jme3.post.FilterPostProcessor;
-import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.Camera;
-import com.jme3.renderer.ViewPort;
-import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.*;
-import com.jme3.scene.shape.*;
-import com.jme3.shadow.CompareMode;
-import com.jme3.shadow.DirectionalLightShadowFilter;
-import com.jme3.shadow.DirectionalLightShadowRenderer;
-import com.jme3.shadow.SpotLightShadowRenderer;
 
+/**
+ * @author Jim Fan  (c) 2014
+ * Highlights the quad when the mouse hovers over it
+ */
 public class QuadHoverState extends AbstractAppState
 {
 	private InputManager inputManager;

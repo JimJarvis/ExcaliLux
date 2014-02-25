@@ -1,16 +1,14 @@
 package control;
 
-import utils.PP;
-import utils.Util;
 import chess.Board;
 import chess.Piece;
 
-import com.jme3.math.ColorRGBA;
-import com.jme3.renderer.*;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Spatial;
-import com.jme3.scene.control.AbstractControl;
 
+/**
+ * @author Jim Fan  (c) 2014
+ * Animates the piece when selected
+ */
 public class PieceSelectedControl extends StagedControl
 {
 	private Board board = Board.getInstance();
