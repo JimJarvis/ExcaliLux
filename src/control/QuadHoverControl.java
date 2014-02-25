@@ -1,4 +1,4 @@
-package chess;
+package control;
 
 import utils.PP;
 import utils.Util;

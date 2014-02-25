@@ -21,6 +21,8 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Quad;
 
+import control.PieceSelectedControl;
+import control.QuadHoverState;
 import static utils.PP.p;
 import static chess.Piece.*;
 import static utils.Util.*;

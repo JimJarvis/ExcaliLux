@@ -1,7 +1,10 @@
-package chess;
+package control;
 
 import utils.PP;
 import utils.Util;
+import chess.Board;
+import chess.BoardManager;
+import chess.Piece;
 
 import com.jme3.renderer.*;
 import com.jme3.scene.control.AbstractControl;

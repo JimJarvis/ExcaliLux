@@ -1,7 +1,10 @@
-package chess;
+package control;
 
 import utils.PP;
 import utils.Util;
+import chess.Board;
+import chess.MaterialFactory;
+import chess.Piece;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.*;

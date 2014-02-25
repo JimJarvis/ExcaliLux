@@ -1,8 +1,9 @@
-package chess;
+package control;
 
 import static utils.PP.p;
 import static utils.Util.*;
 import static chess.Board.*;
+import chess.Board;
 
 import com.jme3.app.*;
 import com.jme3.app.state.*;

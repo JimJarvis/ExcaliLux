@@ -1,7 +1,8 @@
-package chess;
+package control;
 
 import utils.PP;
 import utils.Util;
+import chess.Board;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.*;
