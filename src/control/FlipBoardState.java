@@ -18,7 +18,7 @@ public class FlipBoardState extends AbstractAppState
 	private final float ANGLE_MAX = (float) Math.PI;
 	private AppStateManager stateManager;
 	// Rotation direction
-	private int dir = board.isShiftyPressed() ? 1 : -1;
+	private int dir = board.isShiftyPressed() ? -1 : 1;
 
 	@Override
 	public void initialize(AppStateManager stateManager, Application app)

@@ -65,7 +65,7 @@ public class ExcaliLux extends SimpleApplication
     	
     	// Load SkyBox background texture
     	rootNode.attachChild(MaterialFactory
-    			.getInstance().loadSkyBox("Sky/Sunrise", "bmp")
+    			.getInstance().loadSkyBox("Sky/Sandsky", "bmp")
     			.rotate(Util.toRad(180), 0, 0));
     }
 

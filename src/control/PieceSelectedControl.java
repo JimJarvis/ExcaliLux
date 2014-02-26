@@ -31,7 +31,12 @@ public class PieceSelectedControl extends StagedControl
 	{
 		// this Piece should be the same as board.getSelectedPiece()
 		// Rotate the piece w.r.t. vertical axis
-		piece.rotate(0, 0, tpf);
+		// TODO make this model independent
+		if (board.getModelId() == 1)
+    		piece.rotate(0, 0, tpf);
+		else
+			piece.rotate(0, tpf, 0);
+
 		
 		detach(board.getSelectedPiece() != piece);
 	}

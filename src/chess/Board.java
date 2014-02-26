@@ -111,7 +111,7 @@ public class Board
 		switch(this.pieceMatId)
 		{
 		case 1 : // Marble
-			lightPieceMat = factory.loadMarble(ColorRGBA.White);
+			lightPieceMat = factory.loadGold();
 			darkPieceMat = factory.loadMarble(Purple);
 			break;
 		case 2 :
@@ -126,6 +126,8 @@ public class Board
 	}
 	
 	public int getPieceMatId() {	return this.pieceMatId;	}
+	
+	public int getModelId()	{	return this.modelId;	}
 	
 	/**
 	 * Set the material for the board
@@ -301,7 +303,9 @@ public class Board
 					int id = Integer.parseInt(name);
 					
 					if (isShiftPressed)
-						Board.this.modelId = id;
+					{
+						Board.this.modelId = id > 2 ? 2 : id;
+					}
 					else
 					{
     					Board.this.pieceMatId = id;
@@ -367,7 +371,7 @@ public class Board
 	 * Listens to combo keys like Shift+ and Ctrl+
 	 */
 	// The following booleans indicate whether these keys are active
-	private boolean isShiftPressed = false;
+	private volatile boolean isShiftPressed = false;
 	public boolean isShiftyPressed() {	return this.isShiftPressed;	}
 	private boolean isCtrlPressed = false;
 	public boolean isCtrlPressed() {	return this.isCtrlPressed;		}

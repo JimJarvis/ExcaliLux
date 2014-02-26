@@ -1,1 +1,4 @@
 /bin
+/build/
+/libopenal64.so
+/liblwjgl64.so

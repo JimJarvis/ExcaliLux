@@ -83,6 +83,17 @@ public class MaterialFactory
 		return makeTransparent(mat, "Marble/black_marble");
 	}
 	
+	public Material loadGold()
+	{
+		Material mat = new Material(assetManager, PHONG_SHADER);
+		mat.setBoolean("UseMaterialColors", true);
+    	mat.setColor("Ambient", ColorRGBA.White);
+    	mat.setColor("Specular", ColorRGBA.Yellow);
+    	mat.setFloat("Shininess", 15f);
+    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Jewel/gold.jpg"));
+    	return mat;
+	}
+	
 	public Material loadRosewood(ColorRGBA color)
 	{
 		Material mat = new Material(assetManager, PHONG_SHADER);
@@ -121,7 +132,7 @@ public class MaterialFactory
 		mat.setBoolean("UseMaterialColors", true);
     	mat.setColor("Diffuse", color);
     	mat.setColor("Ambient", ColorRGBA.DarkGray);
-    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Ivory/ivory.jpg"));
+    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Jewel/ivory.jpg"));
     	return mat;
 	}
 	
