@@ -3,12 +3,15 @@ package chess;
 import utils.*;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.asset.AssetNotFoundException;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState.BlendMode;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.util.SkyFactory;
+
+import static com.jme3.math.ColorRGBA.*;
 
 /**
  * @author Jim Fan  (c) 2014
@@ -65,113 +68,85 @@ public class MaterialFactory
 		return loadPlain(null, color);
 	}
 	
-	public Material loadMarble(ColorRGBA color)
+	/**
+	 * This is the master method that all others should inherit from
+	 * Skip any parameter if null
+	 * @param textureFile default in Textures/ folder and jpg format
+	 */
+	private Material loadMaterial(String textureFile,
+			ColorRGBA diffuse, ColorRGBA ambient, ColorRGBA specular, 
+			float shininess)
 	{
 		Material mat = new Material(assetManager, PHONG_SHADER);
 		mat.setBoolean("UseMaterialColors", true);
-    	mat.setColor("Diffuse", color);
-    	mat.setColor("Ambient", ColorRGBA.White);
-    	mat.setColor("Specular", ColorRGBA.White);
-    	mat.setFloat("Shininess", 60f);
-    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Marble/black_marble.jpg"));
+    	mat.setTexture("DiffuseMap", 
+    			assetManager.loadTexture("Textures/" + textureFile + ".jpg"));
+    	mat.setName(textureFile);
+    	if (diffuse != null)
+        	mat.setColor("Diffuse", diffuse);
+    	if (ambient != null)
+    		mat.setColor("Ambient", ambient);
+    	if (specular != null)
+        	mat.setColor("Specular", specular);
+    	if (shininess > 0)
+    		mat.setFloat("Shininess", shininess);
     	return mat;
 	}
 	
-	public Material loadMarbleTransparent(ColorRGBA color)
+	/**
+	 * Load material with no shininess, like wood, cloth, etc.
+	 */
+	private Material loadMaterialShineless(String textureFile,
+								ColorRGBA diffuse, ColorRGBA ambient)
 	{
-		Material mat = loadMarble(color);
-		return makeTransparent(mat, "Marble/black_marble");
+		return loadMaterial(textureFile, diffuse, ambient, null, 0f);
 	}
 	
-	public Material loadGold()
-	{
-		Material mat = new Material(assetManager, PHONG_SHADER);
-		mat.setBoolean("UseMaterialColors", true);
-    	mat.setColor("Ambient", ColorRGBA.White);
-    	mat.setColor("Specular", ColorRGBA.Yellow);
-    	mat.setFloat("Shininess", 15f);
-    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Jewel/gold.jpg"));
-    	return mat;
-	}
-	
-	public Material loadRosewood(ColorRGBA color)
-	{
-		Material mat = new Material(assetManager, PHONG_SHADER);
-		mat.setBoolean("UseMaterialColors", true);
-    	mat.setColor("Diffuse", color);
-    	mat.setColor("Ambient", ColorRGBA.Brown);
-    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Wood/rosewood.jpg"));
-    	return mat;
-	}
-	
-	public Material loadRosewoodTransparent(ColorRGBA color)
-	{
-		Material mat = loadRosewood(color);
-		return makeTransparent(mat, "Wood/rosewood");
-	}
-	
-	public Material loadBrownwood(ColorRGBA color)
-	{
-		Material mat = new Material(assetManager, PHONG_SHADER);
-		mat.setBoolean("UseMaterialColors", true);
-    	mat.setColor("Diffuse", color);
-    	mat.setColor("Ambient", ColorRGBA.Brown);
-    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Wood/brown_wood.jpg"));
-    	return mat;
-	}
-	
-	public Material loadBrownwoodTransparent(ColorRGBA color)
-	{
-		Material mat = loadBrownwood(color);
-		return makeTransparent(mat, "Wood/brown_wood");
-	}
-	
-	public Material loadIvory(ColorRGBA color)
-	{
-		Material mat = new Material(assetManager, PHONG_SHADER);
-		mat.setBoolean("UseMaterialColors", true);
-    	mat.setColor("Diffuse", color);
-    	mat.setColor("Ambient", ColorRGBA.DarkGray);
-    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Jewel/ivory.jpg"));
-    	return mat;
-	}
-	
-	public Material loadIvoryTransparent(ColorRGBA color)
-	{
-		Material mat = loadIvory(color);
-		return makeTransparent(mat, "Ivory/ivory");
-	}
-	
-	public Material loadFlorenceMarble(ColorRGBA color)
-	{
-		Material mat = new Material(assetManager, PHONG_SHADER);
-		mat.setBoolean("UseMaterialColors", true);
-    	mat.setColor("Diffuse", color);
-    	mat.setColor("Ambient", ColorRGBA.DarkGray);
-    	mat.setColor("Specular", ColorRGBA.White);
-    	mat.setFloat("Shininess", 20f);
-    	mat.setTexture("DiffuseMap", assetManager.loadTexture("Textures/Marble/florence_marble.jpg"));
-    	return mat;
-	}
-	
-	public Material loadFlorenceMarbleTransparent(ColorRGBA color)
-	{
-		Material mat = loadFlorenceMarble(color);
-		return makeTransparent(mat, "Marble/florence_marble");
-	}
-	
-	private Material makeTransparent(Material mat, String fileName)
+	/**
+	 * Given a meterial and its alpha map, we make it transparent
+	 * @param textureFile default in Textures/ folder and png format
+	 */
+    public Material setTransparent(Material mat, String textureFile)
 	{
 		// PNG image with alpha channel
-		mat.setTexture("DiffuseMap", 
-				assetManager.loadTexture("Textures/" + fileName + ".png"));
+    	try {
+		mat.setTexture("DiffuseMap",
+				assetManager.loadTexture("Textures/" + textureFile + ".png"));
+    	} catch (AssetNotFoundException e)
+    	{
+    		// The required companion png file isn't found
+    		System.err.println(
+    				"Required companion alpha map: Textures/" + 
+    				textureFile + ".png can't found.");
+    		return mat;
+    	}
 		mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
     	mat.getAdditionalRenderState().setAlphaTest(true);
     	// above alpha will be rendered
     	mat.getAdditionalRenderState().setAlphaFallOff(0f);
     	return mat;
 	}
-	
+    
+    /**
+     * The textureFile defaults to an alpha-channel image with the same name 
+     * in the same directory, but with extension .png
+     */
+    public Material setTransparent(Material mat)
+    {
+    	return setTransparent(mat, mat.getName());
+    }
+    
+    /**
+     * We set this Geometry object's material to transparent
+     */
+    public Material setTransparent(Geometry obj)
+    {
+    	Material trMat = obj.getMaterial().clone();
+    	setTransparent(trMat);
+    	obj.setMaterial(trMat);
+    	return trMat;
+    }
+    
 	/**
 	 * portion < alphaThresh will not be rendered.
 	 */
@@ -195,5 +170,48 @@ public class MaterialFactory
 				assetManager.loadTexture("Textures/" + nameTemplate + "_S" + "." + ext), 
 				assetManager.loadTexture("Textures/" + nameTemplate + "_T" + "." + ext), 
 				assetManager.loadTexture("Textures/" + nameTemplate + "_B" + "." + ext));
+	}
+    
+    /********************  ********************/
+    /**
+     * Repository of my private luxurious material collection.
+     * Methods suffixed with "Tp" is transparent material
+     */
+    /********************  ********************/
+	
+	public Material loadPurpleMarble()
+	{
+		return loadMaterial(
+				"Marble/black_marble", Purple, White, White, 60);
+	}
+	
+	public Material loadGold()
+	{
+		return loadMaterial(
+				"Jewel/gold", null, White, Yellow, 15);
+	}
+	
+	public Material loadRosewood()
+	{
+		return loadMaterialShineless(
+				"Wood/rosewood", LightGray, Brown);
+	}
+	
+	public Material loadBrownwood()
+	{
+		return loadMaterialShineless(
+				"Wood/brown_wood", Brown, Brown);
+	}
+	
+	public Material loadIvory()
+	{
+		return loadMaterialShineless(
+				"Jewel/ivory", White, DarkGray);
+	}
+	
+	public Material loadFlorenceMarble()
+	{
+		return loadMaterial(
+				"Marble/black_marble", Black, DarkGray, White, 20);
 	}
 }

@@ -112,15 +112,15 @@ public class Board
 		{
 		case 1 : // Marble
 			lightPieceMat = factory.loadGold();
-			darkPieceMat = factory.loadMarble(Purple);
+			darkPieceMat = factory.loadPurpleMarble();
 			break;
 		case 2 :
-			lightPieceMat = factory.loadRosewood(ColorRGBA.LightGray);
-			darkPieceMat = factory.loadBrownwood(ColorRGBA.Brown);
+			lightPieceMat = factory.loadRosewood();
+			darkPieceMat = factory.loadBrownwood();
 			break;
 		case 3 :
-			lightPieceMat = factory.loadIvory(ColorRGBA.White);
-			darkPieceMat = factory.loadFlorenceMarble(ColorRGBA.Black);
+			lightPieceMat = factory.loadIvory();
+			darkPieceMat = factory.loadFlorenceMarble();
 			break;
 		}
 	}

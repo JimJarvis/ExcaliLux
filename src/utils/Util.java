@@ -33,7 +33,7 @@ public class Util
                         		.getMaterial().getParam("Color").getValue();
 	}
 	
-	public static ColorRGBA getColor(Piece piece)
+	public static ColorRGBA getDiffuseColor(Piece piece)
 	{
 		return (ColorRGBA) (piece
                         		.getMaterial().getParam("Diffuse").getValue());
