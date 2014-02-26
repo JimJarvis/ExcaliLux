@@ -27,6 +27,7 @@ public class ExcaliLux extends SimpleApplication
     	settings.setFrameRate(60);
 //    	settings.setVSync(true);
     	settings.setResolution(1000, 840);
+    	// Setting the sampling rate might crash on some systems.
     	settings.setSamples(16);
     	
         ExcaliLux app = new ExcaliLux();

@@ -7,12 +7,14 @@ import com.jme3.input.*;
 import com.jme3.input.controls.*;
 import com.jme3.light.*;
 import com.jme3.math.*;
+import com.jme3.post.FilterPostProcessor;
 //import com.jme3.post.FilterPostProcessor;
 //import com.jme3.post.ssao.SSAOFilter;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.renderer.queue.RenderQueue.ShadowMode;
 import com.jme3.scene.*;
+import com.jme3.shadow.DirectionalLightShadowFilter;
 //import com.jme3.scene.shape.*;
 //import com.jme3.shadow.CompareMode;
 //import com.jme3.shadow.DirectionalLightShadowFilter;
@@ -141,8 +143,8 @@ public class BoardState extends AbstractAppState
 		dlsf.setShadowIntensity(0.6f);
 		dlsf.setLight(sun);
 		fpp.addFilter(dlsf);
-		viewPort.addProcessor(fpp);
-*/
+		viewPort.addProcessor(fpp);*/
+
 		// Ambient Occlusion
 		/* parameters
 		 * sampleRadius - The radius of the area where random samples will be picked. default 5.1f

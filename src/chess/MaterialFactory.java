@@ -50,7 +50,7 @@ public class MaterialFactory
 		PLAIN_SHADER = "MatDefs/Plain.j3md";
 	
 	/* Custom color repository */
-	public static ColorRGBA Purple = Util.color(95, 0, 95);
+	public static ColorRGBA NavyPurple = Util.color(45, 0, 65);
 	
 	/* Texture Repository */
 	public Material loadPlain(String texture, ColorRGBA color)
@@ -182,25 +182,25 @@ public class MaterialFactory
 	public Material loadPurpleMarble()
 	{
 		return loadMaterial(
-				"Marble/black_marble", Purple, White, White, 60);
+				"Marble/black_marble", NavyPurple, White, White, 60);
 	}
 	
 	public Material loadGold()
 	{
 		return loadMaterial(
-				"Jewel/gold", null, White, Yellow, 15);
+				"Jewel/gold", null, White, Yellow, 12);
 	}
 	
 	public Material loadRosewood()
 	{
 		return loadMaterialShineless(
-				"Wood/rosewood", LightGray, Brown);
+				"Wood/rosewood", LightGray, LightGray);
 	}
 	
 	public Material loadBrownwood()
 	{
 		return loadMaterialShineless(
-				"Wood/brown_wood", Brown, Brown);
+				"Wood/brown_wood", Brown, LightGray);
 	}
 	
 	public Material loadIvory()
@@ -212,6 +212,6 @@ public class MaterialFactory
 	public Material loadFlorenceMarble()
 	{
 		return loadMaterial(
-				"Marble/black_marble", Black, DarkGray, White, 20);
+				"Marble/florence_marble", DarkGray, DarkGray, LightGray, 30);
 	}
 }

@@ -13,13 +13,15 @@ My submission is self-contained, i.e. doesn't require any extra library installa
 The project compiles and runs succesfully on CLIC, though the speed is extremely slow, because  there're around 400,000 triangular meshes in the scene. 
 So please run it on your local machine. ExcaliLux runs smoothly on my local Ubuntu laptop. 
 
-To facilitate compilation from source, I include a shell script "run.sh" in my submission.
-./run.sh
-is sufficient to compile and run the project. Please don't change the directory structure. 
+To facilitate compilation from source, I include a shell script "run.sh" in my submission. 
+Please don't change the directory structure. 
 
 To make it even more convenient, I have packed all the texture/mesh data and required libraries into a far jar that's directy runnable by double clicking. In case you're using windows, I've also made a self-contained .exe binary. 
 Both can be downloaded from my temporary website: 
+
 www.columbia.edu/~lf2422
+
+I include a folder of screenshots in my submission. The video, however, is too large to upload to courseworks. So I also put it on my website. 
 
 I spent almost two weeks watching/reading tutorials, trying out random fun stuff and tweaking parameters/models all over the place. Graphics gradually becomes addictive as I dive deeper into it.
 The exploration was a pain, but definitely worth the effort. 

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # this is EXTREMELY important. Otherwise running on clic will throw GLX13 error.
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/usr/lib/jvm/java-7-openjdk-amd64/jre/lib/amd64"
 
 echo Renew bin/ folder to store compiled classes
 rm -rf bin/
