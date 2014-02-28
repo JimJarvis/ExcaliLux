@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="assets"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/java-7-oracle"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jME3-core.jar" sourcepath="E:/Dropbox/Programming/Java/Libraries/JMonkeyEngine/source.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/E:/Dropbox/Programming/Java/Libraries/JMonkeyEngine/javadoc.zip!/"/>
