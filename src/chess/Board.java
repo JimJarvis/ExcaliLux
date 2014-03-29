@@ -1,5 +1,7 @@
 package chess;
 
+import utils.MaterialFactory;
+
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
@@ -18,8 +20,8 @@ import control.FlipBoardState;
 import control.PieceSelectedControl;
 import control.QuadHoverState;
 import static chess.Piece.*;
+import static utils.MaterialFactory.*;
 import static utils.Util.*;
-import static chess.MaterialFactory.*;
 import static chess.BoardState.*;
 
 /**

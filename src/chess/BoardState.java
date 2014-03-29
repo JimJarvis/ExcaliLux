@@ -1,5 +1,7 @@
 package chess;
 
+import utils.LightingFactory;
+
 import com.jme3.app.*;
 import com.jme3.app.state.*;
 import com.jme3.asset.AssetManager;

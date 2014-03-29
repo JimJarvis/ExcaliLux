@@ -2,8 +2,8 @@ package control;
 
 import java.util.Random;
 
+import utils.MaterialFactory;
 import chess.Board;
-import chess.MaterialFactory;
 import chess.Piece;
 
 import com.jme3.math.Vector3f;

@@ -53,7 +53,7 @@ public abstract class StagedControl extends AbstractControl
 	/**
 	 * Return to Stage.Init
 	 */
-	public void reinit() {	stage = Stage.Init;	}
+	public void reInit() {	stage = Stage.Init;	}
 
 	@Override
 	protected void controlUpdate(float tpf)

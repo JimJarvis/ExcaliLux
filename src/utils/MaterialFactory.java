@@ -1,6 +1,4 @@
-package chess;
-
-import utils.*;
+package utils;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.AssetNotFoundException;
@@ -17,7 +15,6 @@ import static com.jme3.math.ColorRGBA.*;
  * @author Jim Fan  (c) 2014
  * Providing my own GLSL shaders and J3ME material definition. 
  * The transparent materials are made in photoshop. 
- * Nice collection. Still adding more. 
  */
 public class MaterialFactory
 {
@@ -46,8 +43,7 @@ public class MaterialFactory
 	
 	// File locations
 	private static final String 
-/*		my own version can be found in "test" folder
- * 		PHONG_SHADER = "MatDefs/Phong.j3md",
+/*		PHONG_SHADER = "MatDefs/Phong.j3md",
 		PLAIN_SHADER = "MatDefs/Plain.j3md";*/
 		PHONG_SHADER = "Common/MatDefs/Light/Lighting.j3md",
 		PLAIN_SHADER = "Common/MatDefs/Misc/Unshaded.j3md";
@@ -102,7 +98,7 @@ public class MaterialFactory
 	/**
 	 * Load material with no shininess, like wood, cloth, etc.
 	 */
-	private Material loadMaterialShineless(String textureFile,
+	private Material loadShinelessMaterial(String textureFile,
 								ColorRGBA diffuse, ColorRGBA ambient)
 	{
 		return loadMaterial(textureFile, diffuse, ambient, null, 0f);
@@ -199,19 +195,19 @@ public class MaterialFactory
 	
 	public Material loadRosewood()
 	{
-		return loadMaterialShineless(
+		return loadShinelessMaterial(
 				"Wood/rosewood", LightGray, LightGray);
 	}
 	
 	public Material loadBrownwood()
 	{
-		return loadMaterialShineless(
+		return loadShinelessMaterial(
 				"Wood/brown_wood", Brown, LightGray);
 	}
 	
 	public Material loadIvory()
 	{
-		return loadMaterialShineless(
+		return loadShinelessMaterial(
 				"Jewel/ivory", White, DarkGray);
 	}
 	

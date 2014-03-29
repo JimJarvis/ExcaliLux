@@ -1,4 +1,4 @@
-package chess;
+package utils;
 
 import com.jme3.light.*;
 import com.jme3.math.ColorRGBA;
