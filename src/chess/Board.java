@@ -112,7 +112,7 @@ public class Board
 	{
 		switch(this.pieceMatId)
 		{
-		case 1 : // Marble
+		case 1 :
 			lightPieceMat = factory.loadGold();
 			darkPieceMat = factory.loadPurpleMarble();
 			break;
@@ -123,6 +123,10 @@ public class Board
 		case 3 :
 			lightPieceMat = factory.loadIvory();
 			darkPieceMat = factory.loadFlorenceMarble();
+			break;
+		case 4 :
+			lightPieceMat = factory.loadGourand();
+			darkPieceMat = factory.loadGourand();
 			break;
 		}
 	}

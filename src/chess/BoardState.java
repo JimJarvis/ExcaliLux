@@ -62,7 +62,9 @@ public class BoardState extends AbstractAppState
 		TRIGGER_1 = new KeyTrigger(KeyInput.KEY_1),
 		TRIGGER_2 = new KeyTrigger(KeyInput.KEY_2),
 		TRIGGER_3 = new KeyTrigger(KeyInput.KEY_3),
-		TRIGGER_4 = new KeyTrigger(KeyInput.KEY_4);
+		TRIGGER_4 = new KeyTrigger(KeyInput.KEY_4),
+		TRIGGER_5 = new KeyTrigger(KeyInput.KEY_5),
+		TRIGGER_6 = new KeyTrigger(KeyInput.KEY_6);
 	
      // Trigger maps
 	public final static String
@@ -72,10 +74,7 @@ public class BoardState extends AbstractAppState
     	MAP_FLIP = "Flip",
     	MAP_SHIFT = "Shift",
     	MAP_CTRL = "Ctrl",
-    	MAP_1 = "1", 
-    	MAP_2 = "2", 
-    	MAP_3 = "3", 
-    	MAP_4 = "4";
+    	MAP_NUM[] = new String[10];
 
 	
 	@Override
@@ -100,10 +99,14 @@ public class BoardState extends AbstractAppState
 		// Add input
 		inputManager.addMapping(MAP_SELECT, TRIGGER_SELECT);
 		inputManager.addMapping(MAP_DESELECT, TRIGGER_DESELECT);
-		inputManager.addMapping(MAP_1, TRIGGER_1);
-		inputManager.addMapping(MAP_2, TRIGGER_2);
-		inputManager.addMapping(MAP_3, TRIGGER_3);
-		inputManager.addMapping(MAP_4, TRIGGER_4);
+		// Make key choice mapping 0 - 9
+		for (int i = 0; i < 10; i++)
+		{
+			MAP_NUM[i] = "" + i;
+			inputManager.addMapping(MAP_NUM[i], 
+					new KeyTrigger(i == 0 ? KeyInput.KEY_0 : KeyInput.KEY_1 + i-1));
+		}
+		
 		inputManager.addMapping(MAP_ROTATE, TRIGGER_ROTATE);
 		inputManager.addMapping(MAP_FLIP, TRIGGER_FLIP);
 		inputManager.addMapping(MAP_SHIFT, TRIGGER_SHIFT);
@@ -113,7 +116,7 @@ public class BoardState extends AbstractAppState
 		inputManager.addListener(board.keyRotateListener("analog"), MAP_ROTATE);
 		inputManager.addListener(board.keyRotateListener("flip"), MAP_FLIP);
 		inputManager.addListener(board.keyComboListener(), MAP_SHIFT, MAP_CTRL);
-		inputManager.addListener(board.keyChoiceListener(), MAP_1, MAP_2, MAP_3, MAP_4);
+		inputManager.addListener(board.keyChoiceListener(), MAP_NUM);
 		
 		
 		// Add white ambience

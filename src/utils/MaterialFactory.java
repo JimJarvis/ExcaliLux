@@ -44,9 +44,8 @@ public class MaterialFactory
 	// File locations
 	private static final String 
 		PHONG_SHADER = "MatDefs/Phong.j3md",
-		PLAIN_SHADER = "MatDefs/Plain.j3md";
-/*		PHONG_SHADER = "Common/MatDefs/Light/Lighting.j3md",
-		PLAIN_SHADER = "Common/MatDefs/Misc/Unshaded.j3md";*/
+		PLAIN_SHADER = "MatDefs/Plain.j3md",
+		GOURAND_SHADER = "MatDefs/Gourand.j3md";
 	
 	/* Custom color repository */
 	public static ColorRGBA NavyPurple = Util.color(45, 0, 65);
@@ -65,6 +64,13 @@ public class MaterialFactory
 	public Material loadPlain(ColorRGBA color)
 	{
 		return loadPlain(null, color);
+	}
+	
+	public Material loadGourand()
+	{
+		Material mat = new Material(assetManager, GOURAND_SHADER);
+		
+		return mat;
 	}
 	
 	/**
