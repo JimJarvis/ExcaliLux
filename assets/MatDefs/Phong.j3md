@@ -1,4 +1,5 @@
 // Jim Fan (lf2422)
+// The almighty phong shader
 
 MaterialDef Phong
 {

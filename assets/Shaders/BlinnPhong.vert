@@ -10,7 +10,7 @@ uniform vec4 g_LightColor;
 uniform vec4 g_LightPosition;
 uniform vec4 g_AmbientLightColor;
 
-// Material parameters defined by Gouraud.j3md
+// Material parameters defined by BlinnPhong.j3md
 uniform vec4 m_Ambient;
 uniform vec4 m_Diffuse;
 uniform vec4 m_Specular;

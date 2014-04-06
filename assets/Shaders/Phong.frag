@@ -13,6 +13,7 @@ varying vec4 vLightDir;
 varying vec3 lightVec;
 varying vec3 vNormal;
 
+// from Phong.j3md definition
 uniform sampler2D m_DiffuseMap;
 uniform float m_Shininess;
 uniform float m_AlphaDiscardThreshold;

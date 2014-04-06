@@ -1,4 +1,6 @@
 // Jim Fan (lf2422)
+// Simplest shader possible
+
 MaterialDef Plain
 {
 	MaterialParameters

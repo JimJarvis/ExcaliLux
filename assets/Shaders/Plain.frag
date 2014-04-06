@@ -1,6 +1,6 @@
 // Jim Fan (lf2422)
 
-// material parameters
+// from plain.j3md material definition
 uniform vec4 m_Color;
 uniform sampler2D m_ColorMap;
 

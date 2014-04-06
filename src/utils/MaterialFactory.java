@@ -98,18 +98,6 @@ public class MaterialFactory
 		return mat;
 	}
 	
-	/*
-	 * Debugging only 
-	 */
-	public Material loadLab()
-	{
-		Material mat = new Material(assetManager, LAB_SHADER);
-		mat.setColor("Color", White);
-		mat.setTexture("ColorMap", 
-				assetManager.loadTexture("Textures/Wood/brown_wood.jpg"));
-		return mat;
-	}
-	
 	/**
 	 * This is the master method that all others should inherit from
 	 * Skip any parameter if null
