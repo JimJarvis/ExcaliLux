@@ -16,12 +16,6 @@ MaterialDef BlinnPhong
 
         // Specular power/shininess
         Float Shininess
-
-        // Diffuse map
-        Texture2D DiffuseMap
-
-        // Use the provided ambient, diffuse, and specular colors
-        Boolean UseMaterialColors
     }
 
     Technique

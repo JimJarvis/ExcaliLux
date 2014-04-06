@@ -69,28 +69,19 @@ public class MaterialFactory
 	}
 	
 	/**
-	 * Gourand shading model
+	 * Homework shading model
+	 * mode 1 == Gouraud
+	 * mode 2 == Blinn-Phong
 	 */
-	public Material loadGouraud()
+	public Material loadHW(ColorRGBA color, int mode, float shine)
 	{
-		Material mat = new Material(assetManager, GOURAUD_SHADER);
-		mat.setColor("Diffuse", Blue);
+		Material mat = new Material(assetManager, 
+				mode == 1 ? GOURAUD_SHADER :
+								BLINN_PHONG_SHADER);
+		mat.setColor("Diffuse", color);
 		mat.setColor("Ambient", DarkGray);
 		mat.setColor("Specular", White);
-		mat.setFloat("Shininess", 50);
-		return mat;
-	}
-	
-	/**
-	 * Blinn-Phong shading model
-	 */
-	public Material loadBlinnPhong()
-	{
-		Material mat = new Material(assetManager, BLINN_PHONG_SHADER);
-		mat.setColor("Diffuse", Blue);
-		mat.setColor("Ambient", DarkGray);
-		mat.setColor("Specular", White);
-		mat.setFloat("Shininess", 100);
+		mat.setFloat("Shininess", shine);
 		return mat;
 	}
 	

@@ -123,17 +123,13 @@ public class Board
 			lightPieceMat = factory.loadIvory();
 			darkPieceMat = factory.loadFlorenceMarble();
 			break;
-		case 4 :
-			lightPieceMat = factory.loadLab();
-			darkPieceMat = factory.loadLab();
+		case 4 :  // Gouraud shader
+			lightPieceMat = factory.loadHW(ColorRGBA.Red.mult(0.5f), 1, 50);
+			darkPieceMat = factory.loadHW(ColorRGBA.Blue.mult(0.5f), 1, 50);
 			break;
-		case 5 :
-			lightPieceMat = factory.loadGouraud();
-			darkPieceMat = factory.loadGouraud();
-			break;
-		case 6 :
-			lightPieceMat = factory.loadBlinnPhong();
-			darkPieceMat = factory.loadBlinnPhong();
+		case 5 :  // Blinn-Phong shader
+			lightPieceMat = factory.loadHW(ColorRGBA.Red.mult(0.5f), 2, 80);
+			darkPieceMat = factory.loadHW(ColorRGBA.Blue.mult(0.5f), 2, 80);
 			break;
 		}
 	}

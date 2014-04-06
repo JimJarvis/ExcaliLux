@@ -1,7 +1,7 @@
 // Jim Fan (lf2422)
 // Gourand shader with Phong reflection model
 
-MaterialDef Gouraud
+MaterialDef Checker
 {
     MaterialParameters
     {
@@ -22,8 +22,8 @@ MaterialDef Gouraud
     {
         LightMode MultiPass
 
-        VertexShader GLSL120:   Shaders/Gouraud.vert
-        FragmentShader GLSL120: Shaders/Gouraud.frag
+        VertexShader GLSL120:   Shaders/Checker.vert
+        FragmentShader GLSL120: Shaders/Checker.frag
 
         WorldParameters
         {
