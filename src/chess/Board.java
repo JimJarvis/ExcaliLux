@@ -125,8 +125,8 @@ public class Board
 			darkPieceMat = factory.loadFlorenceMarble();
 			break;
 		case 4 :
-			lightPieceMat = factory.loadGourand();
-			darkPieceMat = factory.loadGourand();
+			lightPieceMat = factory.loadLab();
+			darkPieceMat = factory.loadLab();
 			break;
 		}
 	}

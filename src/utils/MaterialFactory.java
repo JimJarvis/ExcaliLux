@@ -45,7 +45,8 @@ public class MaterialFactory
 	private static final String 
 		PHONG_SHADER = "MatDefs/Phong.j3md",
 		PLAIN_SHADER = "MatDefs/Plain.j3md",
-		GOURAND_SHADER = "MatDefs/Gourand.j3md";
+		GOURAND_SHADER = "MatDefs/Gourand.j3md",
+		LAB_SHADER = "MatDefs/Lab.j3md";
 	
 	/* Custom color repository */
 	public static ColorRGBA NavyPurple = Util.color(45, 0, 65);
@@ -66,10 +67,25 @@ public class MaterialFactory
 		return loadPlain(null, color);
 	}
 	
+	/**
+	 * Gourand shading model
+	 */
 	public Material loadGourand()
 	{
 		Material mat = new Material(assetManager, GOURAND_SHADER);
 		
+		return mat;
+	}
+	
+	/*
+	 * Debugging only 
+	 */
+	public Material loadLab()
+	{
+		Material mat = new Material(assetManager, LAB_SHADER);
+		mat.setColor("Color", White);
+		mat.setTexture("ColorMap", 
+				assetManager.loadTexture("Textures/Wood/brown_wood.jpg"));
 		return mat;
 	}
 	

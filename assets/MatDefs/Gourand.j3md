@@ -1,0 +1,47 @@
+// Jim Fan (lf2422)
+// Gourand shader with Phong reflection model
+
+MaterialDef Gourand
+{
+    MaterialParameters
+    {
+        // Ambient color
+        Color Ambient
+
+        // Diffuse color
+        Color Diffuse
+
+        // Specular color
+        Color Specular
+
+        // Specular power/shininess
+        Float Shininess
+
+        // Diffuse map
+        Texture2D DiffuseMap
+
+        // Use the provided ambient, diffuse, and specular colors
+        Boolean UseMaterialColors
+    }
+
+    Technique
+    {
+        LightMode MultiPass
+
+        VertexShader GLSL120:   Shaders/Gourand.vert
+        FragmentShader GLSL120: Shaders/Gourand.frag
+
+        WorldParameters
+        {
+            WorldViewProjectionMatrix
+            NormalMatrix
+            WorldViewMatrix
+            ViewMatrix
+        }
+
+        Defines
+        {
+            USE_COLOR : UseMaterialColors
+        }
+    }
+}
