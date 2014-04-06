@@ -37,7 +37,7 @@ varying vec4 vLightDir;
 
 void main()
 {
-   texCoord = inTexCoord;
+   texCoord = inTexCoord; // from attribute
 
    vec4 modelSpacePos = vec4(inPosition, 1.0);
    vec3 modelSpaceNorm = inNormal;

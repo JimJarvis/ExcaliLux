@@ -45,7 +45,7 @@ public class MaterialFactory
 	private static final String 
 		PHONG_SHADER = "MatDefs/Phong.j3md",
 		PLAIN_SHADER = "MatDefs/Plain.j3md",
-		GOURAND_SHADER = "MatDefs/Gourand.j3md",
+		GOURAUD_SHADER = "MatDefs/Gouraud.j3md",
 		LAB_SHADER = "MatDefs/Lab.j3md";
 	
 	/* Custom color repository */
@@ -70,9 +70,9 @@ public class MaterialFactory
 	/**
 	 * Gourand shading model
 	 */
-	public Material loadGourand()
+	public Material loadGouraud()
 	{
-		Material mat = new Material(assetManager, GOURAND_SHADER);
+		Material mat = new Material(assetManager, GOURAUD_SHADER);
 		
 		return mat;
 	}
