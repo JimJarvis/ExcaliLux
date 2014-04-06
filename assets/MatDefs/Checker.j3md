@@ -1,21 +1,15 @@
 // Jim Fan (lf2422)
-// Gourand shader with Phong reflection model
+// Checkerboard procedural texturing
 
 MaterialDef Checker
 {
     MaterialParameters
     {
-        // Ambient color
-        Color Ambient
+    	// Checkerboard pattern
+        Color Color1
+        Color Color2
 
-        // Diffuse color
-        Color Diffuse
-
-        // Specular color
-        Color Specular
-
-        // Specular power/shininess
-        Float Shininess
+        Int Density
     }
 
     Technique
@@ -28,9 +22,7 @@ MaterialDef Checker
         WorldParameters
         {
             WorldViewProjectionMatrix
-            NormalMatrix
             WorldViewMatrix
-            ViewMatrix
         }
 
         Defines

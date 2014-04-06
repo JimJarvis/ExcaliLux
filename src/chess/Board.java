@@ -124,12 +124,23 @@ public class Board
 			darkPieceMat = factory.loadFlorenceMarble();
 			break;
 		case 4 :  // Gouraud shader
-			lightPieceMat = factory.loadHW(ColorRGBA.Red.mult(0.5f), 1, 50);
-			darkPieceMat = factory.loadHW(ColorRGBA.Blue.mult(0.5f), 1, 50);
+			lightPieceMat = factory.loadHW(
+					ColorRGBA.Red.mult(0.5f), 1, 50);
+			darkPieceMat = factory.loadHW(
+					ColorRGBA.Blue.mult(0.5f), 1, 50);
 			break;
 		case 5 :  // Blinn-Phong shader
-			lightPieceMat = factory.loadHW(ColorRGBA.Red.mult(0.5f), 2, 80);
-			darkPieceMat = factory.loadHW(ColorRGBA.Blue.mult(0.5f), 2, 80);
+			lightPieceMat = factory.loadHW(
+					ColorRGBA.Red.mult(0.5f), 2, 80);
+			darkPieceMat = factory.loadHW(
+					ColorRGBA.Blue.mult(0.5f), 2, 80);
+			break;
+		case 6 :  // Checkerboard procedural texturing
+			int density = 2;
+			lightPieceMat = factory.loadHW(
+					ColorRGBA.Yellow.mult(0.5f), MaterialFactory.NavyPurple, density);
+			darkPieceMat = factory.loadHW(
+					ColorRGBA.Pink.mult(0.6f), ColorRGBA.Green.mult(0.3f), density);
 			break;
 		}
 	}

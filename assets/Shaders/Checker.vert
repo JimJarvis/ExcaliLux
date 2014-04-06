@@ -2,40 +2,36 @@
 
 // Global variables taken care by the engine
 uniform mat4 g_WorldViewProjectionMatrix;
-uniform mat4 g_WorldViewMatrix;
-uniform mat3 g_NormalMatrix;
-uniform mat4 g_ViewMatrix;
 
-uniform vec4 g_LightColor;
-uniform vec4 g_LightPosition;
-uniform vec4 g_AmbientLightColor;
-
-// Material parameters defined by Gouraud.j3md
-uniform vec4 m_Ambient;
-uniform vec4 m_Diffuse;
-uniform vec4 m_Specular;
-uniform float m_Shininess;
+// Material parameters defined by Checker.j3md
+uniform vec4 m_Color1, m_Color2;
+uniform int m_Density;
 
 attribute vec3 inPosition;
-attribute vec3 inNormal;
+attribute vec2 inTexCoord;
 
 // passed to .frag
-varying vec4 specular;
-varying vec4 diffuse;
+varying	vec4 color;
 
 void main()
 {
 	gl_Position = g_WorldViewProjectionMatrix * vec4(inPosition, 1.0);
-
-	vec3 pos = vec3(g_WorldViewMatrix * vec4(inPosition, 1.0));
-	vec3 normal = normalize(g_NormalMatrix * inNormal);
 	
-	vec3 light = normalize(g_LightPosition.xyz - pos);
+	// determine the texture row and columns
+	int row, col;
+	float s = inTexCoord.s;
+	float t = inTexCoord.t;
 	
-	vec3 viewer = normalize(-pos);
-	vec3 halfway = normalize(light + viewer);
-	specular = clamp(m_Specular * pow(max(dot(halfway, normal), 0.0), 0.3 * m_Shininess), 0.0, 1.0);
-
-	float lambert = max(dot(light, normal), 0.0);
-	diffuse = clamp(m_Diffuse * lambert, 0.0, 1.0);
+	if (s < 0.0)		col = 0;
+//	else if (s >= 4.0)	col = 3;
+	else col = int(floor(s * m_Density));
+	
+	if (t < 0.0)		row = 0;
+//	else if (t >= 4.0) 	row = 3;
+	else row = int(floor(t * m_Density));
+	
+	if (mod(row + col, 2) == 0)
+		color = m_Color1;
+	else
+		color = m_Color2;
 }

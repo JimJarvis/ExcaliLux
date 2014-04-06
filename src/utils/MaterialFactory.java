@@ -47,6 +47,7 @@ public class MaterialFactory
 		PLAIN_SHADER = "MatDefs/Plain.j3md",
 		GOURAUD_SHADER = "MatDefs/Gouraud.j3md",
 		BLINN_PHONG_SHADER = "MatDefs/BlinnPhong.j3md",
+		CHECKER_SHADER = "MatDefs/Checker.j3md",
 		LAB_SHADER = "MatDefs/Lab.j3md";
 	
 	/* Custom color repository */
@@ -82,6 +83,18 @@ public class MaterialFactory
 		mat.setColor("Ambient", DarkGray);
 		mat.setColor("Specular", White);
 		mat.setFloat("Shininess", shine);
+		return mat;
+	}
+	
+	/**
+	 * Homework checkerboard procedural pattern
+	 */
+	public Material loadHW(ColorRGBA c1, ColorRGBA c2, int density)
+	{
+		Material mat = new Material(assetManager, CHECKER_SHADER);
+		mat.setColor("Color1", c1);
+		mat.setColor("Color2", c2);
+		mat.setInt("Density", density);
 		return mat;
 	}
 	
