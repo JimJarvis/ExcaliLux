@@ -47,8 +47,7 @@ public class MaterialFactory
 		PLAIN_SHADER = "MatDefs/Plain.j3md",
 		GOURAUD_SHADER = "MatDefs/Gouraud.j3md",
 		BLINN_PHONG_SHADER = "MatDefs/BlinnPhong.j3md",
-		CHECKER_SHADER = "MatDefs/Checker.j3md",
-		LAB_SHADER = "MatDefs/Lab.j3md";
+		CHECKER_SHADER = "MatDefs/Checker.j3md";
 	
 	/* Custom color repository */
 	public static ColorRGBA NavyPurple = Util.color(45, 0, 65);
@@ -96,6 +95,12 @@ public class MaterialFactory
 		mat.setColor("Color2", c2);
 		mat.setInt("Density", density);
 		return mat;
+	}
+	
+	public void toggleWireFrame(Material mat)
+	{
+		mat.getAdditionalRenderState().setWireframe(
+				!mat.getAdditionalRenderState().isWireframe());
 	}
 	
 	/**

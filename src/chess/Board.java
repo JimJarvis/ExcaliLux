@@ -142,6 +142,9 @@ public class Board
 			darkPieceMat = factory.loadHW(
 					ColorRGBA.Pink.mult(0.6f), ColorRGBA.Green.mult(0.3f), density);
 			break;
+		case 0 :
+			factory.toggleWireFrame(lightPieceMat);
+			factory.toggleWireFrame(darkPieceMat);
 		}
 	}
 	
