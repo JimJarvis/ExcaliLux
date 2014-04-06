@@ -8,6 +8,7 @@ uniform mat4 g_ViewMatrix;
 
 uniform vec4 g_LightColor;
 uniform vec4 g_LightPosition;
+uniform vec4 g_AmbientLightColor;
 
 // Material parameters defined by Gouraud.j3md
 uniform vec4 m_Ambient;
@@ -19,8 +20,9 @@ attribute vec3 inPosition;
 attribute vec3 inNormal;
 
 // passed to .frag
-varying vec4 diffuse;
 varying vec4 specular;
+varying vec4 diffuse;
+varying vec4 color;
 
 void main()
 {
@@ -30,9 +32,15 @@ void main()
 	vec3 normal = normalize(g_NormalMatrix * inNormal);
 	
 	vec3 light = normalize(g_LightPosition.xyz - pos);
-	vec3 viewer = normalize(-pos);
-	vec3 reflection = normalize(reflect(-light, normal));
 	
-	diffuse = clamp(m_Diffuse * max(dot(normal, light), 0.0), 0.0, 1.0);
-	specular = clamp(m_Specular * pow(max(dot(reflection, viewer), 0.0), 0.3 * m_Shininess), 0.0, 1.0);
+	float lambert = max(dot(light, normal), 0.0);
+	if (lambert > 0.0)
+	{
+		vec3 viewer = normalize(-pos);
+		
+		vec3 halfway = normalize(light + viewer);
+		specular = clamp(m_Specular * pow(max(dot(halfway, normal), 0.0), 0.3 * m_Shininess), 0.0, 1.0);
+	}
+	diffuse = clamp(m_Diffuse * lambert, 0.0, 1.0);
+	color = m_Ambient * g_AmbientLightColor + diffuse + specular;
 }

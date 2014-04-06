@@ -20,7 +20,6 @@ import control.FlipBoardState;
 import control.PieceSelectedControl;
 import control.QuadHoverState;
 import static chess.Piece.*;
-import static utils.MaterialFactory.*;
 import static utils.Util.*;
 import static chess.BoardState.*;
 
@@ -131,6 +130,10 @@ public class Board
 		case 5 :
 			lightPieceMat = factory.loadGouraud();
 			darkPieceMat = factory.loadGouraud();
+			break;
+		case 6 :
+			lightPieceMat = factory.loadBlinnPhong();
+			darkPieceMat = factory.loadBlinnPhong();
 			break;
 		}
 	}

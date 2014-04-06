@@ -46,6 +46,7 @@ public class MaterialFactory
 		PHONG_SHADER = "MatDefs/Phong.j3md",
 		PLAIN_SHADER = "MatDefs/Plain.j3md",
 		GOURAUD_SHADER = "MatDefs/Gouraud.j3md",
+		BLINN_PHONG_SHADER = "MatDefs/BlinnPhong.j3md",
 		LAB_SHADER = "MatDefs/Lab.j3md";
 	
 	/* Custom color repository */
@@ -74,10 +75,22 @@ public class MaterialFactory
 	{
 		Material mat = new Material(assetManager, GOURAUD_SHADER);
 		mat.setColor("Diffuse", Blue);
-		mat.setColor("Ambient", Blue);
+		mat.setColor("Ambient", DarkGray);
 		mat.setColor("Specular", White);
-		mat.setFloat("Shininess", 20);
-		
+		mat.setFloat("Shininess", 50);
+		return mat;
+	}
+	
+	/**
+	 * Blinn-Phong shading model
+	 */
+	public Material loadBlinnPhong()
+	{
+		Material mat = new Material(assetManager, BLINN_PHONG_SHADER);
+		mat.setColor("Diffuse", Blue);
+		mat.setColor("Ambient", DarkGray);
+		mat.setColor("Specular", White);
+		mat.setFloat("Shininess", 100);
 		return mat;
 	}
 	
