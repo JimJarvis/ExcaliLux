@@ -128,6 +128,10 @@ public class Board
 			lightPieceMat = factory.loadLab();
 			darkPieceMat = factory.loadLab();
 			break;
+		case 5 :
+			lightPieceMat = factory.loadGouraud();
+			darkPieceMat = factory.loadGouraud();
+			break;
 		}
 	}
 	

@@ -73,6 +73,10 @@ public class MaterialFactory
 	public Material loadGouraud()
 	{
 		Material mat = new Material(assetManager, GOURAUD_SHADER);
+		mat.setColor("Diffuse", Blue);
+		mat.setColor("Ambient", Blue);
+		mat.setColor("Specular", White);
+		mat.setFloat("Shininess", 20);
 		
 		return mat;
 	}
